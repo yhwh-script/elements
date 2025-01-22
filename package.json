@@ -1,0 +1,34 @@
+{
+    "author": "Jahrome <yhwhscript@gmail.com>",
+    "dependencies": {
+        "@vitejs/plugin-basic-ssl": "^1.2.0",
+        "vite": "^6.0.11"
+    },
+    "description": "Custom elements for the yhwh-script framework",
+    "keywords": [
+        "JavaScript",
+        "WebComponents",
+        "CustomElements",
+        "Single File Components",
+        "SFC",
+        "yhwh-script"
+    ],
+    "license": "Unlicense",
+    "main": "index.js",
+    "name": "@yhwh-script/elements",
+    "version": "1.0.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/yhwh-script/elements.git"
+    },
+    "bugs": {
+      "url": "https://github.com/yhwh-script/elements/issues"
+    },
+    "homepage": "https://github.com/yhwh-script/elements#readme",
+    "scripts": {
+        "dev": "vite",
+        "gen": "node gen.cjs",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "type": "module"
+}
