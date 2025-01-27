@@ -16,7 +16,7 @@
     "license": "Unlicense",
     "main": "index.js",
     "name": "@yhwh-script/elements",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "repository": {
         "type": "git",
         "url": "https://github.com/yhwh-script/elements.git"
@@ -26,7 +26,7 @@
     },
     "homepage": "https://github.com/yhwh-script/elements#readme",
     "scripts": {
-        "dev": "vite",
+        "dev": "npm run gen && vite",
         "gen": "node gen.cjs",
         "test": "echo \"Error: no test specified\" && exit 1"
     },

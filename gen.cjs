@@ -18,16 +18,16 @@ fs.readdirSync(constants.ELEMENTS_DIR, { withFileTypes: true })
             const dashspilt = fileName.split("-");
             const prefix = dashspilt[0];
             const dotSplit = dashspilt[1].split(".");
-            const componentName = dotSplit[0];
+            const suffix = dotSplit[0];
             if (!elements[prefix]) {
                 elements[prefix] = [];
             }
             elements[prefix].push({
-                componentName,
+                suffix,
                 filePath: join(
                     constants.ELEMENTS_DIR,
                     folder.name,
-                    prefix + "-" + componentName + ".html"
+                    prefix + "-" + suffix + ".html"
                 ),
             });
         });
