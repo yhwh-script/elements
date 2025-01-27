@@ -6,12 +6,11 @@
     },
     "description": "A lifecycle implementation of customElements for WebComponents.",
     "keywords": [
+        "customElements",
         "JavaScript",
-        "WebComponents",
-        "CustomElements",
-        "Single File Components",
         "SFC",
-        "yhwh-script"
+        "Single File Components",
+        "WebComponents"
     ],
     "license": "Unlicense",
     "main": "index.js",

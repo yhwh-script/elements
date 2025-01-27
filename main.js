@@ -13,28 +13,46 @@ Object.keys(elements).forEach(function (prefix) {
                 constructor() {
                     super();
                     this.attachShadow({ mode: "open" });
-                    debug("created", this.outerHTML);
+                    debug("CONSTRUCTOR CALLED", this.outerHTML);
                 }
                 attributeChangedCallback(name, oldValue, newValue) {
-                    if (newValue != oldValue) {
-                        debug("attributeChanged", this.outerHTML);
-                        this.disconnectedCallback();
-                        this.connectedCallback();
+                    if (oldValue != newValue) {
+                        debug("STATE CHANGED");
+                        console.log("OLD STATE", oldValue);
+                        console.log("NEW STATE", newValue);
+                        // debug("REPLACING CHILDREN");
+                        // this.shadowRoot.replaceChildren(); // this is safe https://dom.spec.whatwg.org/#dom-parentnode-replacechildren
+                        // debug("REMOVING LISTENERS VIA CLONE");
+                        // this.replaceWith(this.cloneNode(false)); // remove all listeners
+                        // debug("CLONED", this.outerHTML);
+                        // if (this.isConnected) {
+                        //     console.log("IS CONNECTED", this.outerHTML);
+                        //     // this.disconnectedCallback();
+                        //     // if (this.hostDataIDs !== undefined && this.hostDataIDs.length > 0) {
+                        //     //     this.connectedCallback();
+                        //     // }
+                        // }
+                        // this.render();
                     }
                 }
                 connectedCallback() {
-                    debug("connected", this.outerHTML);
-                    this.hostDataIDs = []; // the hostDataIDs are used to find the shadowRoot for the WebComponent from the script
-                    this.dataset.id = Math.random().toString(16).substring(2, 8);
-                    let hostElement = this;
-                    while (hostElement && hostElement.dataset.id) {
-                        this.hostDataIDs.push(hostElement.dataset.id);
-                        hostElement = hostElement.getRootNode().host;
+                    debug("CONNECTING", this.outerHTML);
+                    if (this.hostDataIDs !== undefined && this.hostDataIDs.length > 0) {
+                        console.log("WAS CONNECTED");
+                    } else {
+                        this.hostDataIDs = []; // the hostDataIDs are used to find the shadowRoot for the WebComponent from the script
+                        this.dataset.id = Math.random().toString(16).substring(2, 8);
+                        let hostElement = this;
+                        while (hostElement && hostElement.dataset.id) {
+                            this.hostDataIDs.push(hostElement.dataset.id);
+                            hostElement = hostElement.getRootNode().host;
+                        }
                     }
+                    console.log("CONNECTED", this.outerHTML);
                     this.render();
                 }
                 render() {
-                    debug("rendering", this.outerHTML);
+                    debug("RENDERING", this.outerHTML);
                     if (templateFragment) {
                         const newRange = document.createRange().createContextualFragment(templateFragment.innerHTML);
                         this.shadowRoot.replaceChildren(newRange);
@@ -47,10 +65,18 @@ Object.keys(elements).forEach(function (prefix) {
                         const scriptElement = this.#createScript();
                         this.shadowRoot.appendChild(scriptElement);
                     }
+                    debug("RENDERED", this.outerHTML);
                 }
                 disconnectedCallback() {
-                    debug("disconnected", this.outerHTML)
+                    console.log("DISCONNECTING", JSON.stringify(this.hostDataIDs));
+                    debug("REPLACING CHILDREN");
                     this.shadowRoot.replaceChildren(); // this is safe https://dom.spec.whatwg.org/#dom-parentnode-replacechildren
+                    debug("REMOVING LISTENERS VIA CLONE");
+                    this.replaceWith(this.cloneNode(false)); // remove all listeners
+                    debug("CLONED", this.outerHTML);
+                    this.hostDataIDs = [];
+                    // if (this.hostDataIDs !== undefined && this.hostDataIDs.length > 0) {
+                    // }
                 }
                 #createScript() {
                     const scriptElement = document.createElement("script");
@@ -74,7 +100,7 @@ if (shadowDocument) {
     const state = shadowDocument.host.dataset.state ? JSON.parse(shadowDocument.host.dataset.state) : undefined;
     ${scriptFragment ? scriptFragment.textContent : ''}
 } else {
-    // console.error("This element did not exist.")
+    // console.error("This element did not exist.");
 }`;
                     return scriptElement;
                 }

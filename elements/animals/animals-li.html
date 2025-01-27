@@ -1,0 +1,44 @@
+<script>
+    const { log } = await import('./modules/Logger.js');
+
+    const animal = state;
+    const strong = shadowDocument.querySelector("strong");
+    strong.before(animal.icon);
+    strong.innerHTML = `Beware of the ${animal.animal}!`;
+
+    const quickDelete = shadowDocument.querySelector("quick-delete");
+    quickDelete.dataset.state = JSON.stringify({ id: animal.id });
+
+    strong.addEventListener("click", e => {
+        log(animal.sound);
+    });
+</script>
+
+<style>
+    :host {
+        width: 50vw;
+        display: flex;
+    }
+
+    li {
+        width: 100%;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    strong {
+        background-color: firebrick;
+        color: white;
+        padding: 4px;
+        text-align: center;
+        flex-grow: 2
+    }
+</style>
+
+<template>
+    <li>
+        <strong></strong><quick-delete></quick-delete>
+    </li>
+</template>
