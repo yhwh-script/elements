@@ -10,13 +10,11 @@ Object.keys(elements).forEach(function (prefix) {
             const templateFragment = fragment.querySelector("template");
             customElements.define(`${prefix}-${suffix}`, class extends HTMLElement { // customElements must be defined using anonymous classes instead of (illegal) constructor
                 static observedAttributes = ["data-state"];
-            
                 constructor() {
                     super();
                     this.attachShadow({ mode: "open" });
                     debug("created", this.outerHTML);
                 }
-            
                 attributeChangedCallback(name, oldValue, newValue) {
                     if (newValue != oldValue) {
                         debug("attributeChanged", this.outerHTML);
@@ -24,7 +22,6 @@ Object.keys(elements).forEach(function (prefix) {
                         this.connectedCallback();
                     }
                 }
-            
                 connectedCallback() {
                     debug("connected", this.outerHTML);
                     this.hostDataIDs = []; // the hostDataIDs are used to find the shadowRoot for the WebComponent from the script
@@ -36,7 +33,6 @@ Object.keys(elements).forEach(function (prefix) {
                     }
                     this.render();
                 }
-            
                 render() {
                     debug("rendering", this.outerHTML);
                     if (templateFragment) {
@@ -52,12 +48,10 @@ Object.keys(elements).forEach(function (prefix) {
                         this.shadowRoot.appendChild(scriptElement);
                     }
                 }
-            
                 disconnectedCallback() {
                     debug("disconnected", this.outerHTML)
                     this.shadowRoot.replaceChildren(); // this is safe https://dom.spec.whatwg.org/#dom-parentnode-replacechildren
                 }
-            
                 #createScript() {
                     const scriptElement = document.createElement("script");
                     scriptElement.setAttribute("type", "module");

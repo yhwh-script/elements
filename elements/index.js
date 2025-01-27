@@ -1,0 +1,1 @@
+export const elements={"custom":[{"suffix":"element","filePath":"elements\\custom\\custom-element.html"}]};
