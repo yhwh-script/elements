@@ -1,1 +1,1 @@
-export const elements={"animals":[{"suffix":"li","filePath":"elements\\animals\\animals-li.html"},{"suffix":"view","filePath":"elements\\animals\\animals-view.html"}],"home":[{"suffix":"header","filePath":"elements\\home\\home-header.html"},{"suffix":"navigation","filePath":"elements\\home\\home-navigation.html"}],"my":[{"suffix":"app","filePath":"elements\\my\\my-app.html"}],"quick":[{"suffix":"delete","filePath":"elements\\quick\\quick-delete.html"}]};
+export const elements={};
