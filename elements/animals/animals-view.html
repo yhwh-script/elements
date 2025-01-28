@@ -1,5 +1,6 @@
 <script>
     const animals = state;
+
     if (animals) {
         const ul = shadowDocument.querySelector("ul");
         animals.forEach(row => {
@@ -20,23 +21,23 @@
             if (row.id > id) id = row.id;
         });
         id++;
-        const detail = {id, animal, sound, icon };
-        const insertionEvent = new CustomEvent('insertAnimal',  { bubbles: true, composed: true, detail});
+        const detail = { id, animal, sound, icon };
+        const insertionEvent = new CustomEvent('insertAnimal', { bubbles: true, composed: true, detail });
         animalform.dispatchEvent(insertionEvent);
     });
+
     shadowDocument.host.addEventListener('insertAnimal', (e) => {
         state.push(e.detail);
         shadowDocument.host.dataset.state = JSON.stringify(state);
     })
     shadowDocument.host.addEventListener('deleteAnimal', (e) => {
-        console.log("DELETING");
         state.forEach((row, index, arr) => {
             if (row.id == e.detail.id) {
-                arr.splice(index,1);
+                arr.splice(index, 1);
                 shadowDocument.host.dataset.state = JSON.stringify(arr);
             }
         })
-    } )
+    })
 </script>
 
 <style>

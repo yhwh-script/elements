@@ -1,0 +1,23 @@
+:root {
+    font-family: Inter, sans-serif;
+    font-feature-settings: 'liga' 1, 'calt' 1;
+    /* fix for Chrome */
+}
+
+:root * {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+@supports (font-variation-settings: normal) {
+    :root {
+        font-family: InterVariable, sans-serif;
+    }
+}
+
+@font-face {
+    font-family: "Tarrget Italic";
+    src: url('fonts/tarrget/tarrgetital.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}

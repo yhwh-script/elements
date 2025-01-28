@@ -1,17 +1,15 @@
 <script>
     const nav = shadowDocument.querySelector("nav");
 
-    window.onscroll = function () { stickyNavbar() };
-
-    var sticky = nav.offsetTop;
-
-    function stickyNavbar() {
+    window.onscroll = (function stickyNavbar() {
         if (window.pageYOffset >= sticky) {
             nav.classList.add("sticky")
         } else {
             nav.classList.remove("sticky");
         }
-    }
+    })();
+
+    var sticky = nav.offsetTop;
 
     shadowDocument.querySelectorAll("a.navlink").forEach(a => {
         a.addEventListener("click", function (event) {
@@ -22,9 +20,8 @@
             go(url);
         });
     });
-    // Back button clicked
-    window.addEventListener("popstate", function (event) {
-        // TODO: fix back button
+
+    window.addEventListener("popstate", function (event) { // TODO: fix back button click
         if (event.state) {
             go(event.state.route, false);
         }
@@ -34,66 +31,66 @@
         if (addToHistory) {
             history.pushState({ route }, null, route);
         }
+
         let section = null;
         switch (route) {
+            case "/": {
+                section = document.createElement("home-header");
+                break;
+            }
             case "/animals": {
                 section = document.createElement("animals-view");
-                const animals = [{"id": 1, "animal": "Alligator", "sound": "Snap!", "icon": "🐊" },{ "id": 2, "animal": "Lion", "sound": "Roaar!", "icon": "🦁" },{ "id": 3, "animal": "Cat", "sound": "Meaow!", "icon": "🐱" }];
+                const animals = [{ "id": 1, "animal": "Alligator", "sound": "Snap!", "icon": "🐊" }, { "id": 2, "animal": "Lion", "sound": "Roaar!", "icon": "🦁" }, { "id": 3, "animal": "Cat", "sound": "Meaow!", "icon": "🐱" }];
                 section.dataset.state = JSON.stringify(animals);
                 break;
             }
             default:
         }
-        const main = shadowDocument.querySelector("main");
-        main.replaceChildren();
 
-        if (section) {
-            main.appendChild(section);
-            // move to top
-            window.scrollX = 0;
-            window.scrollY = 0;
-        }
         shadowDocument.querySelectorAll("a.navlink").forEach(a => {
             a.classList.remove("active");
             if (a.getAttribute("href") == location.pathname) {
                 a.classList.add("active");
             }
         });
+
+        if (section) {
+            shadowDocument.dispatchEvent(new CustomEvent('navigate', { bubbles: true, composed: true, detail: section }));
+        }
     }
-    // Check the initial URL
+    // Check initial URL
     go(location.pathname);
 </script>
 
 <style>
     nav {
         background-color: #144000;
+        display: flex;
         overflow: hidden;
-        margin: 0;
-    }
 
-    nav a {
-        float: left;
-        color: #ffd700;
-        display: block;
-        text-align: center;
-        padding: 4vh;
-        text-decoration: none;
-        font-size: 4vh;
-        font-weight: 600;
-    }
+        a {
+            float: left;
+            color: #ffd700;
+            padding: 2vh;
+            text-decoration: none;
+            font-size: 4vh;
+            font-weight: 600;
 
-    nav a:hover {
-        background-color: #ffff00;
-        color: #144000;
-    }
+            &:hover {
+                background-color: #ffff00;
+                color: #144000;
+            }
 
-    nav a.active {
-        background-color: #ffd700;
-        color: #144000;
-    }
+            &.active {
+                background-color: #ffd700;
+                color: #144000;
+                text-shadow: none;
+            }
 
-    nav a.hidden {
-        display: none;
+            &.hidden {
+                display: none;
+            }
+        }
     }
 
     .sticky {
@@ -104,10 +101,8 @@
 </style>
 
 <template>
-    <home-header></home-header>
     <nav>
         <a class="navlink active" href="/">🏠</a>
         <a class="navlink" href="/animals">Animals</a>
     </nav>
-    <main></main>
 </template>
