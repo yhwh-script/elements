@@ -15,7 +15,7 @@
     "license": "Unlicense",
     "main": "index.js",
     "name": "@yhwh-script/elements",
-    "version": "1.1.1",
+    "version": "1.2.0",
     "repository": {
         "type": "git",
         "url": "https://github.com/yhwh-script/elements.git"
