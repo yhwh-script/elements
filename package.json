@@ -6,16 +6,17 @@
     },
     "description": "A lifecycle implementation of customElements for WebComponents.",
     "keywords": [
-        "customElements",
+        "CustomElements",
         "JavaScript",
         "SFC",
         "Single File Components",
+        "Vanilla",
         "WebComponents"
     ],
     "license": "Unlicense",
     "main": "index.js",
     "name": "@yhwh-script/elements",
-    "version": "1.2.0",
+    "version": "1.0.0",
     "repository": {
         "type": "git",
         "url": "https://github.com/yhwh-script/elements.git"

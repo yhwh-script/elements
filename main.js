@@ -32,9 +32,11 @@ Object.keys(elements).forEach(function (prefix) {
                         this.#appendScript();
                     }
                 }
-                attributeChangedCallback() {
+                attributeChangedCallback(name, oldValue, newValue) {
                     if (this.isConnected) {
-                        this.replaceWith(this.cloneNode(false)); // remove all listeners and reconstruct
+                        if (oldValue != newValue) {
+                            this.replaceWith(this.cloneNode(false)); // remove all listeners and reconstruct
+                        }
                     }
                 }
                 #createScript() {
