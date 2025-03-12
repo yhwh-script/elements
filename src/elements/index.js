@@ -1,0 +1,1 @@
+export const htmlFiles=["elements/custom/custom-h1.html"];

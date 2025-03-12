@@ -5,5 +5,7 @@ export function error(...args) { if (LOG_LEVEL >= 2) console.error(...args); }
 export function warn(...args) { if (LOG_LEVEL >= 3) console.warn(...args); }
 
 export function log(...args) { if (LOG_LEVEL >= 4) console.log(...args); }
+
+export function info(...args) { if (LOG_LEVEL >= 4) console.info(...args); }
 // For DEBUG log level: verbose must be turned on in Dev Tools
 export function debug(...args) { if (LOG_LEVEL >= 5) console.debug(...args); }

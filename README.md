@@ -15,7 +15,7 @@ However, you can also clone this repository:
 ```
 
 ## How-To
-- create single file HTML components as customElements with `<script>`, `<style>` and `<template>` under `./{ELEMENTS_DIR}/{prefix}/{prefix}-{suffix}.html` 
+- create single file HTML components as customElements with `<script>`, `<style>` and `<template>` under `./public/elements/{prefix}/{prefix}-{suffix}.html` 
 - use them as usual customElements `<prefix-suffix>`
 - you have access to the `shadowDocument` and `state`
 - set state by `shadowDocument.host.dataset.state = JSON.stringify({newState})`
