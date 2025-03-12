@@ -3,7 +3,7 @@
     "bugs": {
         "url": "https://github.com/yhwh-script/elements/issues"
     },
-    "dependencies": {
+    "devDependencies": {
         "@vitejs/plugin-basic-ssl": "^2.0.0",
         "vite": "^6.2.0"
     },
@@ -14,8 +14,8 @@
         "CustomElements",
         "HTML",
         "JavaScript",
-        "Single File Components",
         "SFC",
+        "Single File Components",
         "Vanilla",
         "Vite",
         "WebComponents"
@@ -29,12 +29,12 @@
         "type": "git",
         "url": "git+https://github.com/yhwh-script/elements.git"
     },
-    "version": "1.2.3",
     "scripts": {
         "dev": "npm run gen && vite",
         "gen": "node gen.cjs",
         "build": "npm run gen && vite build",
         "preview": "vite preview"
     },
-    "type": "module"
+    "type": "module",
+    "version": "1.2.7"
 }
