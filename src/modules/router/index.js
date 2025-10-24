@@ -51,7 +51,7 @@ export function clickHandler(clickEvent) {
 }
 
 const _callbacks = [];
-export function register(callback) {
+export function onNavigate(callback) {
     callback(); // invoke immediately
     if (!_callbacks.includes(callback)) {
         _callbacks.push(callback);
