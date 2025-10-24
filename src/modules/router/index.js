@@ -1,4 +1,4 @@
-var _sitemap = [];
+export const moduleName = "router";
 
 (function write(history) {
     const pushStateOriginal = history.pushState;
@@ -9,15 +9,13 @@ var _sitemap = [];
     };
 })(history);
 
-
 function push(pathname) {
     let mapping = getMapping(pathname);
     history.pushState(mapping.template, mapping.title, pathname);
 }
 
-export const moduleName = "router";
-
-export function init(sitemap) {
+var _sitemap = [];
+export function initSitemap(sitemap) {
     _sitemap = sitemap;
 }
 
@@ -46,7 +44,7 @@ export function getMapping(pathname) {
 export function clickHandler(clickEvent) {
     clickEvent.preventDefault();
     clickEvent.stopPropagation();
-    let a = clickEvent.target.closest("li").querySelector("a");
+    let a = clickEvent.target.closest("li").querySelector("a"); // assumes all clickEvents originate from an li>a
     push(a.getAttribute("href"));
 }
 

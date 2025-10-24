@@ -6,7 +6,7 @@
 </template>
 
 <script>
-    const sitemap = [
+    router.initSitemap([
         [
             { "/": { "title": "Home", "template": "home-page" } }
         ],
@@ -15,8 +15,7 @@
             { "/b": { "title": "Page B", "template": "page-b" } },
             { "/c": { "title": "Page C", "template": "page-c" } }
         ]
-    ]
-    router.init(sitemap);
+    ]);
 
     const main = shadowDocument.querySelector("main");
 
