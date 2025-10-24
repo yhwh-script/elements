@@ -1,0 +1,7 @@
+:root {
+    --kingdom: #144000;
+    --gold: #ffd700;
+
+    --light: var(--gold);
+    --dark: var(--kingdom);
+}

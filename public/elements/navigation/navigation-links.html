@@ -1,0 +1,206 @@
+<template>
+    <ul slot="navigation">
+        <li><a href="/a">Page A</a></li>
+        <li><a href="/b">Page B</a></li>
+        <li><a href="/c">Page C</a></li>
+    </ul>
+</template>
+
+<script>
+    const links = shadowDocument.querySelectorAll("li");
+
+    links.forEach(li => {
+        let a = li.querySelector("a");
+        li.addEventListener("click", router.clickHandler);
+        a.addEventListener("click", router.clickHandler);
+    });
+
+    function activate(pathname = location.pathname) {
+        shadowDocument.querySelector(".active")?.classList.remove("active");
+        for (let a of shadowDocument.querySelectorAll('a')) {
+            if (pathname.includes(a.getAttribute("href"))) {
+                a.closest("li").classList.add("active");
+                return;
+            }
+        }
+    }
+
+    router.register(activate);
+</script>
+
+<style>
+    /* mobile first */
+    :host {
+        width: 100vw;
+    }
+
+    ul {
+        display: flex;
+        flex-flow: column nowrap;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        width: inherit;
+
+        li {
+            background-color: transparent;
+            border-top: 15px solid transparent;
+            border-right: 50vw solid #144000;
+            border-bottom: 0px solid #144000;
+            border-left: 50vw solid #144000;
+            cursor: pointer;
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: center;
+            height: 50px;
+            position: relative;
+            z-index: 0;
+
+            &::after {
+                position: absolute;
+                border-top: 15px solid #144000;
+                border-left: 50vw solid transparent;
+                border-right: 50vw solid transparent;
+                border-bottom: 0 solid transparent;
+                content: "";
+                display: block;
+                top: 50px;
+            }
+
+
+            &:hover {
+                border-left: 50vw solid yellow;
+                border-right: 50vw solid yellow;
+                border-bottom: 0px solid yellow;
+                position: relative;
+                opacity: .7;
+                z-index: 1;
+
+                &::after {
+                    position: absolute;
+                    border-top: 15px solid yellow;
+                    border-left: 50vw solid transparent;
+                    border-right: 50vw solid transparent;
+                    border-bottom: 0 solid transparent;
+                    content: "";
+                    display: block;
+                    top: 50px;
+                    z-index: 1;
+                }
+
+                a {
+                    opacity: 1 !important;
+                    color: var(--dark);
+                }
+            }
+
+            a {
+                color: var(--light);
+                text-decoration: none;
+                font-weight: bold;
+                align-self: center;
+                line-height: 30px;
+                font-size: 30px;
+
+                &:hover {
+                    text-shadow: 0px 0px 8px #144000;
+                    transition: text-shadow .2s ease-in .05s;
+                }
+            }
+
+            &.active {
+                border-top: 15px solid transparent;
+                border-left: 50vw solid yellow;
+                border-right: 50vw solid yellow;
+                border-bottom: 0px solid yellow;
+                position: relative;
+                z-index: 1;
+
+                &::after {
+                    border-top: 15px solid yellow;
+                }
+
+                a {
+                    color: var(--dark);
+                }
+            }
+        }
+    }
+
+    @media only screen and (min-width: 600px) {
+        :host {
+            overflow: hidden;
+        }
+
+        ul {
+            flex-flow: row nowrap;
+            width: calc(100% - 30px);
+
+            li {
+                width: 33vw;
+                border-top: 4vh solid #144000;
+                border-right: 30px solid #144000;
+                border-bottom: 4vh solid #144000;
+                border-left: 30px solid transparent;
+                height: 0;
+
+                &:last-child::after {
+                    border-top: 4vh solid transparent;
+                    border-bottom: 4vh solid transparent;
+                    border-right: 0;
+                    top: 0;
+                }
+
+                &:last-child:hover {
+                    &&::after {
+                        border-right: 0;
+                    }
+                }
+
+                &::after {
+                    transform: translate(100%, -50%);
+                    border-top: 4vh solid transparent;
+                    border-right: 30px solid transparent;
+                    border-bottom: 4vh solid transparent;
+                    border-left: 30px solid #144000;
+                    height: 0;
+                    right: -28px;
+                    top: 0;
+                }
+
+                &:hover {
+                    border-top: 4vh solid yellow;
+                    border-right: 30px solid yellow;
+                    border-bottom: 4vh solid yellow;
+                    border-left: 30px solid transparent;
+
+                    &::after {
+                        border-top: 4vh solid transparent;
+                        border-right: 30px solid transparent;
+                        border-bottom: 4vh solid transparent;
+                        border-left: 30px solid yellow;
+                        top: 0;
+                    }
+                }
+
+                &.active {
+                    border-top: 4vh solid yellow;
+                    border-right: 30px solid yellow;
+                    border-bottom: 4vh solid yellow;
+                    border-left: 30px solid transparent;
+
+                    &::after {
+                        border-left: 30px solid yellow;
+                        border-top: 4vh solid transparent;
+                    }
+                }
+
+                a {
+                    top: 0;
+                    align-self: center;
+                    position: relative;
+                }
+            }
+        }
+    }
+</style>

@@ -1,0 +1,34 @@
+<template>
+    <nav>
+        <navigation-links></navigation-links>
+    </nav>
+    <main></main>
+</template>
+
+<script>
+    const sitemap = [
+        [
+            { "/": { "title": "Home", "template": "home-page" } }
+        ],
+        [
+            { "/a": { "title": "Page A", "template": "page-a" } },
+            { "/b": { "title": "Page B", "template": "page-b" } },
+            { "/c": { "title": "Page C", "template": "page-c" } }
+        ]
+    ]
+    router.init(sitemap);
+
+    const main = shadowDocument.querySelector("main");
+
+    function loadContent(pathname = location.pathname) {
+        let mapping = router.getMapping(pathname);
+        let mainElement = document.createElement(mapping.template);
+        main.replaceChildren(mainElement);
+    }
+
+    router.register(loadContent)
+</script>
+
+<style>
+
+</style>
