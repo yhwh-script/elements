@@ -18,10 +18,7 @@ However, you can also clone this repository:
 - Create Your customElement `{prefix}-{suffix}` in single HTML component files with `<script>`, `<style>` and `<template>` under `./public/elements/{prefix}/{prefix}-{suffix}.html` 
 - Inside each component, You have access to
    - `shadowDocument`. You can work with it just like You would with the regular `document`.
-   - Inside each component You have also access to all the modules from `/src/modules` by their name, e.g. `router`
-
-## NO-GOs
-- **never** `addEventListener` to `shadowDocument`
+   - all the modules from `/src/modules` by their `{moduleName}`
 
 ## Further reading
 - Check out my [examples project](https://github.com/yhwh-script/examples)
