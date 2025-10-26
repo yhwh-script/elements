@@ -1,7 +1,9 @@
 # elements
-This is a framework for teaching you the [standards-conforming](https://developer.mozilla.org/en-US/docs/Web/API/Web_components) **lifecycle implementation of customElements for WebComponents**. Check it out!
+This is a framework for teaching you the [standards-conforming](https://developer.mozilla.org/en-US/docs/Web/API/Web_components) **lifecycle implementation of customElements for WebComponents**. However unofficial, but check it out!
 
-Minimalistic with less then 100 lines of code (LOCs) in the [main functionality](https://github.com/yhwh-script/elements/blob/main/src/elements/index.js) that will blow your mind, yet completely easy and understandable paradigm. Wanna start over?
+Minimalistic in the [main functionality](https://github.com/yhwh-script/elements/blob/main/src/elements/index.js) with less than 100 lines of code (LOCs) that will blow your mind, yet completely easy to follow paradigm, if you get it. Wanna think vanilla? Are you tired of all the frameworks? I think, I might have something for ya.
+
+
 
 ## Installation
 
@@ -17,12 +19,12 @@ You can then also savely remove node_modules ans start over with
    npm run dev
 ```
 
-## Installation alternative
+### Installation alternative
 Please check, if npx uses the latest version.
 
 ```npx @yhwh-script/create-app {YOUR_PROJECT}```
 
-## Yet another
+### Yet another
 Or, you can just clone this repository:
 
 ```git clone https://github.com/yhwh-script/elements.git
