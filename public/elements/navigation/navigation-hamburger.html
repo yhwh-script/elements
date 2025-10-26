@@ -1,0 +1,79 @@
+<template>
+    <div id="hamburger">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+</template>
+<script>
+    /* API: shadowDocument.host can be .open or :hover'ed */
+    shadowDocument.host.addEventListener("click", function (e) {
+        const customElement = new CustomEvent('toggle-menu', { bubbles: true, composed: true });
+        shadowDocument.dispatchEvent(customElement);
+    });
+</script>
+<style>
+    :host {
+        cursor: pointer;
+        height: 70px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        transition:
+            font-size .2s ease-in-out,
+            top .2s ease-in-out,
+            right .2s ease-in-out;
+        width: 70px;
+        z-index: 2;
+    }
+
+    #hamburger {
+        bottom: auto;
+        font-size: .5em;
+        position: absolute;
+        left: auto;
+        right: 0;
+        top: 0;
+        transition: all .2s;
+    }
+
+    :host(:hover) #hamburger {
+        bottom: 0;
+        font-size: 1.2em;
+        left: 0;
+        right: auto;
+        top: auto;
+    }
+
+    :host(:hover) .bar {
+        box-shadow: 0px 0px 10px #144000;
+    }
+
+    :host(:hover.open) .bar {
+        box-shadow: 0px 0px 10px #ffd700;
+    }
+
+    :host(.open) .bar {
+        background-color: var(--light);
+    }
+
+    :host(.open) .bar:nth-child(1) {
+        transform: translate(0, 0.7em) rotate(-45deg);
+    }
+
+    :host(.open) .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    :host(.open) .bar:nth-child(3) {
+        transform: translate(0, -0.7em) rotate(45deg);
+    }
+
+    /* defaults */
+    .bar {
+        background-color: var(--dark);
+        width: 2.5em;
+        height: .3em;
+        margin: .375em 0;
+    }
+</style>

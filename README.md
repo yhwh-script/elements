@@ -3,8 +3,6 @@ This is a framework for teaching you the [standards-conforming](https://develope
 
 Minimalistic in the [main functionality](https://github.com/yhwh-script/elements/blob/main/src/elements/index.js) with less than 100 lines of code (LOCs) that will blow your mind, yet completely easy to follow paradigm, if you get it. Wanna think vanilla? Are you tired of all the frameworks? I think, I might have something for ya.
 
-
-
 ## Installation
 
 In an empty folder, install @yhwh-script/elements with the following command:
@@ -13,13 +11,13 @@ In an empty folder, install @yhwh-script/elements with the following command:
 
 Then move all files from node_modules/@yhwh-script into the current folder,
 overwriting package.json and everything.
-You can then also savely remove node_modules ans start over with
+You can then also savely remove node_modules and start over with
 
 ```npm install
    npm run dev
 ```
 
-### Installation alternative
+### Deprecated installation alternative
 Please check, if npx uses the latest version.
 
 ```npx @yhwh-script/create-app {YOUR_PROJECT}```

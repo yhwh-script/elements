@@ -1,4 +1,5 @@
 <template>
+    <navigation-hamburger></navigation-hamburger>
     <nav>
         <navigation-links></navigation-links>
     </nav>
@@ -17,6 +18,9 @@
         ]
     ]);
 
+    const hamburger = shadowDocument.querySelector("navigation-hamburger");
+    const nav = shadowDocument.querySelector("nav");
+    nav.style.setProperty("--dynamic-height", `${Math.ceil(nav.getBoundingClientRect().height)}px`);
     const main = shadowDocument.querySelector("main");
 
     function loadContent(pathname = location.pathname) {
@@ -25,9 +29,27 @@
         main.replaceChildren(mainElement);
     }
 
-    router.onNavigate(loadContent)
+    shadowDocument.host.addEventListener("toggle-menu", function (e) {
+        e.stopPropagation();
+        hamburger.classList.toggle("open");
+        nav.classList.toggle("open");
+    });
+
+    router.onNavigate(loadContent);
 </script>
 
 <style>
+    nav {
+        display: flex;
+        transform: translateY(calc(-100% - 30px));
+        transition: transform 1s ease-in-out;
+        width: 100%;
+        z-index: 1;
+        position: relative;
+    }
 
+    nav.open {
+        height: var(--dynamic-height);
+        transform: translateY(0);
+    }
 </style>

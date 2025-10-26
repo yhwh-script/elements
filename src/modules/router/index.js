@@ -67,7 +67,7 @@ function routerHandler(event) {
 addEventListener("popstate", routerHandler);
 addEventListener("pushstate", routerHandler);
 
-// workaround to access at least the first level
+// workaround to access at least the first routing level when url entered into browser's address bar 
 const resources = (location.pathname).split("/");
 if (resources.length > 2) {
     push(resources.slice(0, 2).join("/"));
