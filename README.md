@@ -14,7 +14,8 @@ overwriting package.json and everything.
 You can then also savely remove node_modules ans start over with
 
 ```npm install
-   npm run dev```
+   npm run dev
+```
 
 ## Installation alternative
 Please check, if npx uses the latest version.
