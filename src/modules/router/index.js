@@ -2,12 +2,12 @@ export const moduleName = "router";
 
 (function write(history) {
     const pushStateOriginal = history.pushState;
-    history.pushState = function () {
+    history.pushState = function overwritePushStateToDispatchPushStateEvent() {
         const result = pushStateOriginal.apply(history, arguments);
         dispatchEvent(new Event('pushstate', { bubbles: false, composed: false }));
         return result;
     };
-})(history);
+})(window.history);
 
 function push(pathname) {
     let mapping = getMapping(pathname);
@@ -42,6 +42,7 @@ export function getMapping(pathname) {
 }
 
 export function clickHandler(clickEvent) {
+    console.log("clickHandler");
     clickEvent.preventDefault();
     clickEvent.stopPropagation();
     let a = clickEvent.target.closest("li").querySelector("a"); // assumes all clickEvents originate from an li>a

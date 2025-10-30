@@ -7,9 +7,11 @@
 </template>
 <script>
     /* API: shadowDocument.host can be .open or :hover'ed */
-    shadowDocument.host.addEventListener("click", function (e) {
-        const customElement = new CustomEvent('toggle-menu', { bubbles: true, composed: true });
-        shadowDocument.dispatchEvent(customElement);
+    shadowDocument.host.addEventListener("click",
+    function triggerEvent(e) {
+        e.stopImmediatePropagation();
+        let event = { "type": "toggle-nav" }
+        Bus.dispatchEvent(event)
     });
 </script>
 <style>

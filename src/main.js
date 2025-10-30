@@ -1,5 +1,7 @@
 Promise.all([
     import('./modules/router'),
+    import('./modules/bus'),
+    import('./modules/callbacks'),
 ]).then((importedModules) => {
     importedModules.forEach((module) => {
         if (!module.moduleName) {

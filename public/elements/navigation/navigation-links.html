@@ -15,7 +15,7 @@
         a.addEventListener("click", router.clickHandler);
     });
 
-    function activate(pathname = location.pathname) {
+    router.onNavigate(function activate(pathname = location.pathname) {
         shadowDocument.querySelector(".active")?.classList.remove("active");
         for (let a of shadowDocument.querySelectorAll('a')) {
             if (pathname.includes(a.getAttribute("href"))) {
@@ -23,9 +23,7 @@
                 return;
             }
         }
-    }
-
-    router.onNavigate(activate);
+    });
 </script>
 
 <style>
