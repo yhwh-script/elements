@@ -3,12 +3,6 @@
 export const moduleName = "eventBus";
 
 const _weakMap = new WeakMap();
-const _callbacks = []
-
-export function dispatch(e) {
-    console.log(e.type);
-    _registeredListeners.get(e.type)
-}
 
 /**
  * Ruft die gespeicherten Listener für ein bestimmtes Element ab.
@@ -118,7 +112,12 @@ function patchRemoveEventListener(targetPrototype) {
 function patchDispatchEvent(targetPrototype) {
     const originalDispatchEvent = targetPrototype.dispatchEvent;
     targetPrototype.dispatchEvent = function (event) {
-        console.log(event.type);
+        // TODO check use of listeners in WeakMap/ type etc.
+        const listeners = getListeners(event.type);
+        console.log(listeners[event.type]);
+        listeners[event.type].forEach(callback => {
+            callback();
+        });
         const result = originalDispatchEvent.call(this, event);
         console.log(`[EVENT DISPATCHED] Type: ${event.type} on Element: ${this}, result: ${result}`);
         // let listeners = getListeners(this);

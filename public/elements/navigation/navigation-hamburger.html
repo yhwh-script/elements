@@ -12,7 +12,7 @@
     hamburger.addEventListener("click",
         (e) => {
             console.log("Dispatching toggle-nav...");
-            dispatchEvent(new Event("toggle-nav"));
+            hamburger.dispatchEvent(new Event("toggle-nav"));
         });
 </script>
 <style>

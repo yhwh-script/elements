@@ -23,7 +23,7 @@
     nav.style.setProperty("--dynamic-height", `${Math.ceil(nav.getBoundingClientRect().height)}px`);
     const main = shadowDocument.querySelector("main");
 
-    hamburger.addEventListener(
+    hamburger.shadowRoot.addEventListener(
         "toggle-nav",
         function toggleNav() {
             console.log("executing toggleNav");
