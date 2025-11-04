@@ -1,13 +1,10 @@
 export const moduleName = "router";
 
-(function write(history) {
-    const pushStateOriginal = history.pushState;
-    history.pushState = function overwritePushStateToDispatchPushStateEvent() {
-        const result = pushStateOriginal.apply(history, arguments);
-        dispatchEvent(new Event('pushstate', { bubbles: false, composed: false }));
-        return result;
-    };
-})(window.history);
+
+
+export function test(target, listener) {
+    console.log(`Registering RouterListener ${listener} on ${target}.`); // maybe window?
+}
 
 function push(pathname) {
     let mapping = getMapping(pathname);
@@ -41,11 +38,15 @@ export function getMapping(pathname) {
     return mapping;
 }
 
-export function clickHandler(clickEvent) {
-    console.log("clickHandler");
-    clickEvent.preventDefault();
-    clickEvent.stopPropagation();
-    let a = clickEvent.target.closest("li").querySelector("a"); // assumes all clickEvents originate from an li>a
+export function clickHandlerDeprecated(clickEvent) {
+    // FIX: assumes all clickEvents originate from an li>a
+    let a = clickEvent.target.closest("li").querySelector("a");
+    push(a.getAttribute("href"));
+}
+
+export function clickHandler(element) {
+    // FIX: assumes element is an li>a
+    let a = element.closest("li").querySelector("a");
     push(a.getAttribute("href"));
 }
 
@@ -56,17 +57,6 @@ export function onNavigate(callback) {
         _callbacks.push(callback);
     } // otherwise already present
 }
-
-function routerHandler(event) {
-    if (["popstate", "pushstate"].includes(event.type)) {
-        event.preventDefault();
-        event.stopPropagation();
-        _callbacks.forEach(callback => callback(location.pathname)); // callbacks (with use of history.state) can be called only after they have been registered with router
-    }
-}
-
-addEventListener("popstate", routerHandler);
-addEventListener("pushstate", routerHandler);
 
 // workaround to access at least the first routing level when url entered into browser's address bar 
 const resources = (location.pathname).split("/");

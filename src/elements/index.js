@@ -1,3 +1,4 @@
+console.debug("START CustomElements")
 import { htmlFiles } from './elements.js';
 
 window.getShadowDocument = function magic(hostDataIDs) {

@@ -7,36 +7,37 @@
 </template>
 
 <script>
-    router.initSitemap([
-        [
-            { "/": { "title": "Home", "template": "home-page" } }
-        ],
-        [
-            { "/a": { "title": "Page A", "template": "page-a" } },
-            { "/b": { "title": "Page B", "template": "page-b" } },
-            { "/c": { "title": "Page C", "template": "page-c" } }
-        ]
-    ]);
+    // router.initSitemap([
+    //     [
+    //         { "/": { "title": "Home", "template": "home-page" } }
+    //     ],
+    //     [
+    //         { "/a": { "title": "Page A", "template": "page-a" } },
+    //         { "/b": { "title": "Page B", "template": "page-b" } },
+    //         { "/c": { "title": "Page C", "template": "page-c" } }
+    //     ]
+    // ]);
 
     const hamburger = shadowDocument.querySelector("navigation-hamburger");
     const nav = shadowDocument.querySelector("nav");
     nav.style.setProperty("--dynamic-height", `${Math.ceil(nav.getBoundingClientRect().height)}px`);
     const main = shadowDocument.querySelector("main");
 
-    Bus.registerRuleWithCallback(
-        { "type": "toggle-nav" },
+    hamburger.addEventListener(
+        "toggle-nav",
         function toggleNav() {
+            console.log("executing toggleNav");
             // callbacks with context from closure are ephemeral, but can be saved inside a WeakMap for the livetime of a session
             hamburger.classList.toggle("open");
             nav.classList.toggle("open");
         }
     );
 
-    router.onNavigate(function loadContent(pathname = location.pathname) {
-        let mapping = router.getMapping(pathname);
-        let mainElement = document.createElement(mapping.template);
-        main.replaceChildren(mainElement);
-    });
+    // eventHandler.onNavigate(function loadContent(pathname = location.pathname) {
+    //     let mapping = router.getMapping(pathname);
+    //     let mainElement = document.createElement(mapping.template);
+    //     main.replaceChildren(mainElement);
+    // });
 </script>
 
 <style>

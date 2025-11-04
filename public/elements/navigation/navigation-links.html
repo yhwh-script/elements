@@ -11,19 +11,28 @@
 
     links.forEach(li => {
         let a = li.querySelector("a");
-        li.addEventListener("click", router.clickHandler);
-        a.addEventListener("click", router.clickHandler);
+        li.addEventListener("click", () => {
+            console.log("clicked", li);
+        });
+        a.addEventListener("click", () => {
+            console.log("clicked", a);
+        })
+        // eventHandler.onClick(li, router.clickHandler);
+        // eventHandler.onClick(a, router.clickHandler);
     });
 
-    router.onNavigate(function activate(pathname = location.pathname) {
-        shadowDocument.querySelector(".active")?.classList.remove("active");
-        for (let a of shadowDocument.querySelectorAll('a')) {
-            if (pathname.includes(a.getAttribute("href"))) {
-                a.closest("li").classList.add("active");
-                return;
-            }
-        }
-    });
+    // router.onNavigate(function activate(pathname = location.pathname) {
+    //     shadowDocument.querySelector(".active")?.classList.remove("active");
+    //     for (let a of shadowDocument.querySelectorAll('a')) {
+    //         if (pathname.includes(a.getAttribute("href"))) {
+    //             a.closest("li").classList.add("active");
+    //             return;
+    //         }
+    //     }
+    // });
+
+    // addEventListener("popstate", handleEvent);
+    // addEventListener("pushstate", handleEvent);
 </script>
 
 <style>
