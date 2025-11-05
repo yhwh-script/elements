@@ -6,11 +6,12 @@
     </div>
 </template>
 <script>
-    /* API: shadowDocument.host can be .open or :hover'ed */
-    shadowDocument.host.addEventListener("click", function (e) {
-        const customElement = new CustomEvent('toggle-menu', { bubbles: true, composed: true });
-        shadowDocument.dispatchEvent(customElement);
-    });
+    const hamburger = shadowDocument.querySelector("#hamburger");
+
+    hamburger.addEventListener("click",
+        (e) => {
+            hamburger.dispatchEvent(new Event("toggle-nav"));
+        });
 </script>
 <style>
     :host {

@@ -23,19 +23,23 @@
     nav.style.setProperty("--dynamic-height", `${Math.ceil(nav.getBoundingClientRect().height)}px`);
     const main = shadowDocument.querySelector("main");
 
-    function loadContent(pathname = location.pathname) {
-        let mapping = router.getMapping(pathname);
-        let mainElement = document.createElement(mapping.template);
-        main.replaceChildren(mainElement);
+    hamburger.addEventListener(
+        "toggle-nav",
+        function toggleNav() {
+            hamburger.classList.toggle("open");
+            nav.classList.toggle("open");
+        }
+    );
+
+    function loadContent(e) {
+        let mapping = router.getMapping(location.pathname);
+        main.replaceChildren(document.createElement(mapping.template));
     }
 
-    shadowDocument.host.addEventListener("toggle-menu", function (e) {
-        e.stopPropagation();
-        hamburger.classList.toggle("open");
-        nav.classList.toggle("open");
-    });
+    loadContent();
 
-    router.onNavigate(loadContent);
+    addEventListener("popstate", loadContent);
+    addEventListener("pushstate", loadContent);
 </script>
 
 <style>

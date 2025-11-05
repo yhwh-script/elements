@@ -9,23 +9,33 @@
 <script>
     const links = shadowDocument.querySelectorAll("li");
 
+    function push(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        let a = e.target.closest("li").querySelector("a");
+        router.push(a.getAttribute("href"));
+    }
+
     links.forEach(li => {
-        let a = li.querySelector("a");
-        li.addEventListener("click", router.clickHandler);
-        a.addEventListener("click", router.clickHandler);
+        li.addEventListener("click", push);
+        // let a = li.querySelector("a");
+        // a.addEventListener("click", push)
     });
 
-    function activate(pathname = location.pathname) {
+    function activate(e) {
         shadowDocument.querySelector(".active")?.classList.remove("active");
         for (let a of shadowDocument.querySelectorAll('a')) {
-            if (pathname.includes(a.getAttribute("href"))) {
+            if (location.pathname.includes(a.getAttribute("href"))) {
                 a.closest("li").classList.add("active");
                 return;
             }
         }
     }
 
-    router.onNavigate(activate);
+    activate();
+
+    addEventListener("popstate", activate);
+    addEventListener("pushstate", activate);
 </script>
 
 <style>

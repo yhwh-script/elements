@@ -1,5 +1,6 @@
 Promise.all([
-    import('./modules/router'),
+    import('./modules/eventBus'),
+    import('./modules/router')
 ]).then((importedModules) => {
     importedModules.forEach((module) => {
         if (!module.moduleName) {
@@ -10,3 +11,4 @@ Promise.all([
 }).finally(() => {
     import('/src/elements');
 });
+
