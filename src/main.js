@@ -1,7 +1,6 @@
-console.debug("START Modules");
-
 Promise.all([
     import('./modules/eventBus'),
+    import('./modules/router')
 ]).then((importedModules) => {
     importedModules.forEach((module) => {
         if (!module.moduleName) {
@@ -10,8 +9,6 @@ Promise.all([
         window[module.moduleName] = module;
     })
 }).finally(() => {
-    // import('./modules/router'),
     import('/src/elements');
-    console.log("END Modules")
 });
 

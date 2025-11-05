@@ -7,37 +7,39 @@
 </template>
 
 <script>
-    // router.initSitemap([
-    //     [
-    //         { "/": { "title": "Home", "template": "home-page" } }
-    //     ],
-    //     [
-    //         { "/a": { "title": "Page A", "template": "page-a" } },
-    //         { "/b": { "title": "Page B", "template": "page-b" } },
-    //         { "/c": { "title": "Page C", "template": "page-c" } }
-    //     ]
-    // ]);
+    router.initSitemap([
+        [
+            { "/": { "title": "Home", "template": "home-page" } }
+        ],
+        [
+            { "/a": { "title": "Page A", "template": "page-a" } },
+            { "/b": { "title": "Page B", "template": "page-b" } },
+            { "/c": { "title": "Page C", "template": "page-c" } }
+        ]
+    ]);
 
     const hamburger = shadowDocument.querySelector("navigation-hamburger");
     const nav = shadowDocument.querySelector("nav");
     nav.style.setProperty("--dynamic-height", `${Math.ceil(nav.getBoundingClientRect().height)}px`);
     const main = shadowDocument.querySelector("main");
 
-    hamburger.shadowRoot.addEventListener(
+    hamburger.addEventListener(
         "toggle-nav",
         function toggleNav() {
-            console.log("executing toggleNav");
-            // callbacks with context from closure are ephemeral, but can be saved inside a WeakMap for the livetime of a session
             hamburger.classList.toggle("open");
             nav.classList.toggle("open");
         }
     );
 
-    // eventHandler.onNavigate(function loadContent(pathname = location.pathname) {
-    //     let mapping = router.getMapping(pathname);
-    //     let mainElement = document.createElement(mapping.template);
-    //     main.replaceChildren(mainElement);
-    // });
+    function loadContent(e) {
+        let mapping = router.getMapping(location.pathname);
+        main.replaceChildren(document.createElement(mapping.template));
+    }
+
+    loadContent();
+
+    addEventListener("popstate", loadContent);
+    addEventListener("pushstate", loadContent);
 </script>
 
 <style>

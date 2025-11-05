@@ -6,12 +6,10 @@
     </div>
 </template>
 <script>
-    /* API: shadowDocument.host can be .open or :hover'ed */
     const hamburger = shadowDocument.querySelector("#hamburger");
 
     hamburger.addEventListener("click",
         (e) => {
-            console.log("Dispatching toggle-nav...");
             hamburger.dispatchEvent(new Event("toggle-nav"));
         });
 </script>
