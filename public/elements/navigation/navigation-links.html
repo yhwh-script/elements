@@ -9,17 +9,19 @@
 <script>
     const links = shadowDocument.querySelectorAll("li");
 
-    function push(e) {
+    function onClick(e) {
         e.preventDefault();
         e.stopImmediatePropagation();
-        let a = e.target.closest("li").querySelector("a");
-        router.push(a.getAttribute("href"));
+        let li = e.target.closest("li");
+        let a = li.querySelector("a");
+        let pathname = a.getAttribute("href");
+        router.push(pathname);
     }
 
     links.forEach(li => {
-        li.addEventListener("click", push);
-        // let a = li.querySelector("a");
-        // a.addEventListener("click", push)
+        li.addEventListener("click", onClick);
+        let a = li.querySelector("a");
+        a.addEventListener("click", onClick)
     });
 
     function activate(e) {
@@ -27,7 +29,7 @@
         for (let a of shadowDocument.querySelectorAll('a')) {
             if (location.pathname.includes(a.getAttribute("href"))) {
                 a.closest("li").classList.add("active");
-                return;
+                break;
             }
         }
     }
