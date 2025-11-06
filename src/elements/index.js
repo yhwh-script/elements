@@ -9,7 +9,7 @@ window.getShadowDocument = function magic(hostDataIDs) {
         for (let hostDataID of hostDataIDs) {
             let found = shadowDOM.querySelector('[data-id="' + hostDataID + '"]');
             if (found) { shadowDOM = found.shadowRoot; } else {
-                console.log("failed hostDataID", hostDataID);
+                console.error({hostDataID});
                 return null; }
         }
         return shadowDOM;
@@ -46,16 +46,9 @@ for (const filePath of htmlFiles) {
             }
             #render() {
                 this.shadowRoot.replaceChildren();
-                if (scriptFragment && scriptFragment.hasAttribute("prefer")) {
-                    console.debug("preferring script on ", this);
-                    this.#appendScript();
-                    this.#appendTemplate();
-                    this.#appendStyle();
-                } else {
-                    this.#appendTemplate();
-                    this.#appendStyle();
-                    this.#appendScript();
-                }
+                this.#appendTemplate();
+                this.#appendStyle();
+                this.#appendScript();
             }
             #appendScript() {
                 if (scriptFragment) {

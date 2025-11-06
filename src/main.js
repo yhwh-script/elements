@@ -1,5 +1,5 @@
 Promise.all([
-    import('./modules/bus'),
+    import('./modules/shadowH4x'),
     import('./modules/router')
 ]).then((importedModules) => {
     importedModules.forEach((module) => {

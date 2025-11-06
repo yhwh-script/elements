@@ -1,4 +1,4 @@
-export const moduleName = "bus";
+export const moduleName = "shadowH4x";
 
 const _bus = {};
 
@@ -22,8 +22,7 @@ function patchAddEventListener(targetPrototype) {
                     listeners = clickListenersWeakMap.get(this);
                     if (!listeners) { // there are not clickListener for this yet, initialize with new Array.
                         clickListenersWeakMap.set(this, [listener]);
-                    } else { // there are clickListeners, add if not already present
-                        console.debug("ConcurrencyError?");
+                    } else { // there is at least one other clickListeners. push the listener if not already present
                         if (!listeners.get(this).includes(listener)) {
                             listeners.push(listener);
                         }
