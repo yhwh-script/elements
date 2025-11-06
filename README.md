@@ -1,5 +1,5 @@
 # elements
-This is a framework for teaching you the [standards-conforming](https://developer.mozilla.org/en-US/docs/Web/API/Web_components) **lifecycle implementation of customElements for WebComponents**. Although it's unofficial You should check it out!
+This is a bus-featured framework for [standards-conforming](https://developer.mozilla.org/en-US/docs/Web/API/Web_components) **WebComponents**. Although it's unofficial You should check it out!
 
 Minimalistic in the [main functionality](https://github.com/yhwh-script/elements/blob/main/src/elements/index.js) with less than 100 lines of code (LOCs) that will blow your mind, yet completely easy to follow paradigm, if you get it. ;)
 
