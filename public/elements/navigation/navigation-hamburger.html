@@ -7,9 +7,9 @@
 </template>
 <script>
     const hamburger = shadowDocument.querySelector("#hamburger");
-
+    // Use the patched methods from EventTarget.prototype
     hamburger.addEventListener("click",
-        (e) => {
+        function onHamburgerClicked(e) {
             hamburger.dispatchEvent(new Event("toggle-nav"));
         });
 </script>

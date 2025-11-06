@@ -1,5 +1,5 @@
 Promise.all([
-    import('./modules/eventBus'),
+    import('./modules/bus'),
     import('./modules/router')
 ]).then((importedModules) => {
     importedModules.forEach((module) => {

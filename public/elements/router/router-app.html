@@ -7,23 +7,12 @@
 </template>
 
 <script>
-    router.initSitemap([
-        [
-            { "/": { "title": "Home", "template": "home-page" } }
-        ],
-        [
-            { "/a": { "title": "Page A", "template": "page-a" } },
-            { "/b": { "title": "Page B", "template": "page-b" } },
-            { "/c": { "title": "Page C", "template": "page-c" } }
-        ]
-    ]);
-
     const hamburger = shadowDocument.querySelector("navigation-hamburger");
     const nav = shadowDocument.querySelector("nav");
     nav.style.setProperty("--dynamic-height", `${Math.ceil(nav.getBoundingClientRect().height)}px`);
     const main = shadowDocument.querySelector("main");
 
-    hamburger.addEventListener(
+    addEventListener(
         "toggle-nav",
         function toggleNav() {
             hamburger.classList.toggle("open");
