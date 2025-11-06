@@ -1,7 +1,9 @@
 # elements
-This is a framework for teaching you the [standards-conforming](https://developer.mozilla.org/en-US/docs/Web/API/Web_components) **lifecycle implementation of customElements for WebComponents**. Although it's unofficial, You should check it out!
+This is a framework for teaching you the [standards-conforming](https://developer.mozilla.org/en-US/docs/Web/API/Web_components) **lifecycle implementation of customElements for WebComponents**. Although it's unofficial You should check it out!
 
-Minimalistic in the [main functionality](https://github.com/yhwh-script/elements/blob/main/src/elements/index.js) with less than 100 lines of code (LOCs) that will blow your mind, yet completely easy to follow paradigm, if you get it. Wanna think vanilla? Are you tired of all the frameworks? I think, I might have something for ya.
+Minimalistic in the [main functionality](https://github.com/yhwh-script/elements/blob/main/src/elements/index.js) with less than 100 lines of code (LOCs) that will blow your mind, yet completely easy to follow paradigm, if you get it. ;)
+
+Wanna think vanilla? Are you tired of all the frameworks? I think, I might have something for ya.
 
 ## Installation
 
@@ -13,14 +15,10 @@ Then move all files from node_modules/@yhwh-script into the current folder,
 overwriting package.json and everything.
 You can then also savely remove node_modules and start over with
 
-```npm install
+```
+   npm install
    npm run dev
 ```
-
-### Deprecated installation alternative
-Please check, if npx uses the latest version.
-
-```npx @yhwh-script/create-app {YOUR_PROJECT}```
 
 ### Yet another
 Or, you can just clone this repository:
@@ -31,6 +29,14 @@ Or, you can just clone this repository:
    npm install
    npm run dev
 ```
+
+### Deprecated installation alternative
+Please check, if npx uses the latest version.
+
+```
+    npx @yhwh-script/create-app {YOUR_PROJECT}
+```
+
 
 ## How-To
 - Create Your customElement `{prefix}-{suffix}` in single HTML component files with `<script>`, `<style>` and `<template>` under `./public/elements/{prefix}/{prefix}-{suffix}.html` 
