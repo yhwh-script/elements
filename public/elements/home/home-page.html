@@ -1,5 +1,175 @@
 <template>
-    <h2>Hello world!</h2>
+    <p>The combination of <strong>SQLite WASM</strong> (WebAssembly) and the <strong>Origin Private File System
+            (OPFS)</strong> is currently the <strong>most powerful</strong> and <strong>recommended</strong> method for
+        running a complete relational database in the browser.</p>
+    <p>Here is a detailed breakdown of why this combination is so important and what implications it has.</p>
+    <hr />
+    <h2>🚀 The Revolution: SQLite WASM in OPFS</h2>
+    <h3>1. SQLite WASM: The Database Engine</h3>
+    <p>SQLite is a small, fast, serverless database system. By compiling SQLite's native C code into <strong>WebAssembly
+            (WASM)</strong>, the database engine can run directly in the browser at near-native speed (often only about
+        10% slower than native).</p>
+    <ul>
+        <li><strong>Advantage:</strong> You get the full power of SQLite (SQL queries, indices, transactions, FTS) in
+            the browser, without a backend connection for data processing.</li>
+    </ul>
+    <h3>2. OPFS: The File System Backend</h3>
+    <p>The <strong>Origin Private File System (OPFS)</strong> is part of the File System Access API and provides a
+        private, highly optimized storage area that is only accessible to the respective <em>Origin</em> (e.g.,
+        <code>https://your-app.com</code>).</p>
+    <h2>🔑 Why the Combination is So Powerful</h2>
+    <p>SQLite was designed as a synchronous system that requires immediate access to its database file. However,
+        standard browser APIs like IndexedDB are asynchronous. The combination solves this central problem:</p>
+    <h3>A. Synchronous File Access in the Worker</h3>
+    <ul>
+        <li>The <strong>SQLite WASM code</strong> must be executed in a <strong>Web Worker</strong>.</li>
+        <li>The <code>createSyncAccessHandle()</code> of the OPFS can be called in the Web Worker. This
+            <strong>synchronous access</strong> is crucial because it allows SQLite to perform its file operations as if
+            it were running on a normal operating system (OS) – fast and blocking (in the Worker, not the main thread!).
+        </li>
+        <li><strong>Result:</strong> The performance for read and write operations, which was slow with older browser
+            storage solutions like IndexedDB VFS (Virtual File System), is drastically improved.</li>
+    </ul>
+    <h3>B. Improved Performance</h3>
+    <p>Benchmarks show that SQLite WASM with OPFS (especially for bulk operations) performs significantly better than
+        alternative browser storage solutions:</p>
+    <ul>
+        <li><strong>Lower Latency:</strong> Direct, blocking file access minimizes the overhead of asynchronous Promise
+            chains.</li>
+        <li><strong>Efficient Indexing:</strong> SQLite can optimally utilize its indices on the OPFS file, enabling
+            fast, complex queries.</li>
+    </ul>
+    <h2>💡 Limitations and Prerequisites</h2>
+    <p>The use of this technology is associated with some important prerequisites:</p>
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align: left;">Feature</th>
+                <th style="text-align: left;">Implication</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: left;"><strong>Cross-Origin Isolation</strong></td>
+                <td style="text-align: left;">The application must be served with the HTTP headers
+                    <code>Cross-Origin-Opener-Policy: same-origin</code> and
+                    <code>Cross-Origin-Embedder-Policy: require-corp</code>. This is necessary because SQLite WASM uses
+                    <strong><code>SharedArrayBuffer</code></strong>, a prerequisite for synchronous communication.</td>
+            </tr>
+            <tr>
+                <td style="text-align: left;"><strong>Execution in the Worker</strong></td>
+                <td style="text-align: left;">Synchronous file access is only available in a <strong>Dedicated Web
+                        Worker</strong> to prevent the main UI thread from being blocked. Communication between the main
+                    thread and SQLite takes place via worker messages.</td>
+            </tr>
+            <tr>
+                <td style="text-align: left;"><strong>Exclusive Lock</strong></td>
+                <td style="text-align: left;">The <code>SyncAccessHandle</code> places an exclusive lock on the file.
+                    This means that the database <strong>cannot be opened and written to by two different tabs or
+                        workers simultaneously</strong> (unless a more complex VFS with additional locking is used).
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: left;"><strong>Start-Up Time</strong></td>
+                <td style="text-align: left;">Downloading and initializing the WASM binary and setting up the database
+                    can initially take <strong>about half a second</strong>, which can increase the cold start time of
+                    the application.</td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>🌐 Summary</h2>
+    <p>SQLite WASM in OPFS is the <strong>game changer</strong> for demanding, data-centric web applications. It enables
+        <em>Local-First</em> architectures where large amounts of data and complex queries can be handled entirely
+        client-side and very performantly.</p>
+    <p>If you are developing a web application that requires a fully-fledged, fast relational database, this is the
+        technology you should be using.</p>
 </template>
 <script></script>
-<style></style>
+<style>
+    ;host {
+        line-height: 1.6;
+        color: #333;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+    }
+
+    h1,
+    h2,
+    h3 {
+        color: #2c3e50;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 0.3em;
+    }
+
+    h2 {
+        font-size: 1.8em;
+    }
+
+    h3 {
+        font-size: 1.4em;
+    }
+
+    p {
+        margin-bottom: 1em;
+    }
+
+    strong {
+        color: #2980b9;
+    }
+
+    ul {
+        padding-left: 20px;
+    }
+
+    li {
+        margin-bottom: 0.5em;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    th,
+    td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #ecf0f1;
+        color: #34495e;
+        font-weight: 600;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    code {
+        background-color: #eee;
+        padding: 2px 4px;
+        border-radius: 3px;
+        font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+    }
+
+    blockquote {
+        border-left: 4px solid #3498db;
+        padding: 10px 20px;
+        margin: 20px 0;
+        background-color: #eaf6ff;
+        color: #34495e;
+    }
+
+    hr {
+        border: 0;
+        height: 1px;
+        background: #ccc;
+        margin: 30px 0;
+    }
+</style>

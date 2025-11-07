@@ -7,7 +7,7 @@
 
 body {
     background-attachment: fixed;
-    background-image: linear-gradient(to bottom, #426600, #778d00, #b7b300, #ffd700);
+    /* background-image: linear-gradient(to bottom, #426600, #778d00, #b7b300, #ffd700); */
     /* background-image: linear-gradient(to bottom, var(--dark), #426600, #778d00, #b7b300, var(--light)); */
     box-sizing: border-box;
     margin: 0;
