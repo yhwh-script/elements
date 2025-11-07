@@ -1,5 +1,4 @@
 export const htmlFiles=[
-  "elements/a/a-index.html",
   "elements/error/error-404.html",
   "elements/home/home-page.html",
   "elements/navigation/navigation-hamburger.html",

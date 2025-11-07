@@ -1,6 +1,7 @@
 Promise.all([
     import('./modules/shadowH4x'),
-    import('./modules/router')
+    import('./modules/router'),
+    import('./modules/sqlite'),
 ]).then((importedModules) => {
     importedModules.forEach((module) => {
         if (!module.moduleName) {

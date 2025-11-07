@@ -60,6 +60,5 @@ This means, You'll have to put Your CustomElements SFCs under public/elements in
    - all the modules from `/src/modules` by their `export const moduleName`
 
 ## Further reading
-- Check out my [examples project](https://github.com/yhwh-script/examples)
-- the [SQLite extension](https://github.com/yhwh-script/sqlite)
-- or (recommended) the [SQLite extension with examples](https://github.com/yhwh-script/sqlite-examples)
+- [Using custom elements](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements#registering_a_custom_element)
+

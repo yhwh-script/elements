@@ -3,9 +3,12 @@
     "bugs": {
         "url": "https://github.com/yhwh-script/elements/issues"
     },
+    "dependencies": {
+        "@sqlite.org/sqlite-wasm": "^3.49.1-build2"
+    },
     "devDependencies": {
         "@vitejs/plugin-basic-ssl": "^2.1.0",
-        "vite": "^7.1.12"
+        "vite": "^7.2.1"
     },
     "description": "yhwh-script is a universal WebComponents framework",
     "homepage": "https://github.com/yhwh-script/elements#readme",
@@ -15,14 +18,17 @@
         "EventBus",
         "HTML",
         "JavaScript",
+        "OPFS",
         "Router",
         "SCSS",
         "SFC",
         "SingleFileComponents",
-        "Vanilla",
+        "SQLite",
+        "vanilla",
         "Vite",
         "W3C",
-        "WebComponents"
+        "WebComponents",
+        "yhwh-script"
     ],
     "license": "Unlicense",
     "name": "@yhwh-script/elements",
@@ -40,5 +46,5 @@
         "preview": "vite preview"
     },
     "type": "module",
-    "version": "3.0.2"
+    "version": "4.0.0"
 }

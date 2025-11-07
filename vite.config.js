@@ -6,7 +6,20 @@ export default defineConfig({
         target: 'esnext'
     },
     server: {
-        port: 3443,
+        port: 5173,
+        host: '0.0.0.0', // Allow access from outside the container 
+        strictPort: true,
+        headers: {
+            'Cross-Origin-Opener-Policy': 'same-origin',
+            'Cross-Origin-Embedder-Policy': 'require-corp',
+        },
+        hmr: {
+            host: 'jahro.me',
+            protocol: 'wss',
+        },
+    },
+    optimizeDeps: {
+        exclude: ['@sqlite.org/sqlite-wasm'],
     },
     plugins: [
         basicSsl()

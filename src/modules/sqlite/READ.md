@@ -1,0 +1,1 @@
+Please, do not import sqlite module directly. Use an API!
