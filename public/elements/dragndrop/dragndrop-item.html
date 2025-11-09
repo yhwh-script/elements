@@ -1,0 +1,62 @@
+<template>
+    <!-- Draggable Item Custom Element with Shadow DOM and Slots -->
+    <div class="content">
+        <slot></slot>
+    </div>
+</template>
+
+<script>
+    shadowDocument.host.draggable = true;
+
+    shadowDocument.host.addEventListener("dragstart", (event) => {
+        // event.stopPropagation();
+        // event.preventDefault();
+        event.dataTransfer.clearData();
+        event.dataTransfer.effectAllowed = 'move';
+        // event.dataTransfer.setDragImage(host, 0, 0);
+        // Store reference to the original element
+        event.dataTransfer.setData('text/array', JSON.stringify(shadowDocument.host.hostDataIDs));
+
+        shadowDocument.host.classList.add("dragging");
+    });
+
+    shadowDocument.host.addEventListener('drag', (event) => {
+        event.stopPropagation();
+        // event.preventDefault();
+    });
+
+    shadowDocument.host.addEventListener('dragend', (event) => {
+        event.stopPropagation();
+        event.preventDefault();
+        shadowDocument.host.classList.remove('dragging');
+    });
+</script>
+
+<style>
+    :host {
+        display: inline-block;
+        padding: 10px 15px;
+        margin: 5px;
+        background: var(--drag-item-bg, #4CAF50);
+        color: var(--drag-item-color, white);
+        border-radius: 4px;
+        cursor: grab;
+        user-select: none;
+        transition: opacity 0.2s ease;
+    }
+
+    :host(:active) {
+        cursor: grabbing;
+    }
+
+    :host(.dragging) {
+        opacity: 0.5;
+        /* background: red; */
+    }
+
+    .content {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+</style>

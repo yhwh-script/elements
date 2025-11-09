@@ -9,6 +9,7 @@ function patchAddEventListener(targetPrototype) {
         const originalListener = listener;
         listener = function wrapper(e) {
             console.debug(`[${e.type}Wrapper] executing ${originalListener}`);
+            console.log({_bus});
             if (e.currentTarget !== Window) {
                 return originalListener.call(this, e);
             }

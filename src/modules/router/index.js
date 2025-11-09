@@ -1,15 +1,10 @@
 export const moduleName = "router";
 
-let _sitemap = [
-    [
-        { "/": { "title": "Home", "template": "home-page" } }
-    ],
-    [
-        { "/a": { "title": "Page A", "template": "page-a" } },
-        { "/b": { "title": "Page B", "template": "page-b" } },
-        { "/c": { "title": "Page C", "template": "page-c" } }
-    ]
-];
+let _sitemap = [];
+
+export function initSitemap(sitemap) {
+    _sitemap = sitemap;
+}
 
 export function getMapping(pathname) {
     let errorMapping = { "title": "404", "template": "error-404" };
@@ -20,7 +15,9 @@ export function getMapping(pathname) {
             if (route[pathname]) { mapping = route[pathname]; }
         }
         if (!mapping) { mapping = errorMapping; }
-    } else { mapping = _sitemap[0][0][pathname] }
+    } else {
+        mapping = _sitemap[0][0][pathname];
+    }
     if (!customElements.get(mapping.template)) { return errorMapping; }
     return mapping;
 }
@@ -48,5 +45,7 @@ addEventListener("popstate", function onPopstateDebug(e) {
 });
 
 // workaround to access at least the first routing level when url entered into browser's address bar 
-const resources = (location.pathname).split("/");
-if (resources.length > 2) { push(resources.slice(0, 2).join("/")); }
+if (location.pathname) {
+    const resources = (location.pathname).split("/");
+    if (resources.length > 2) { push(resources.slice(0, 2).join("/")); }
+}

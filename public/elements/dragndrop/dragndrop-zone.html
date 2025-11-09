@@ -1,0 +1,105 @@
+<template>
+    <div class="zone-container">
+        <slot></slot>
+    </div>
+</template>
+<script>
+    function refresh() {
+        if (shadowDocument.host.querySelector("dragndrop-item")) {
+            shadowDocument.host.classList.remove("empty");
+        } else {
+            shadowDocument.host.classList.add("empty");
+        }
+    };
+
+    shadowDocument.querySelector('slot').addEventListener("slotchange", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        refresh();
+    });
+
+    shadowDocument.host.addEventListener("dragover", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+    });
+
+    shadowDocument.host.addEventListener("dragenter", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        console.debug("dragenter", shadowDocument.host);
+        shadowDocument.host.classList.add('drag-over');
+    });
+
+    shadowDocument.host.addEventListener("dragleave", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        // console.debug("dragleave", event.relatedTarget);
+        if (!shadowDocument.host.contains(event.relatedTarget)) {
+            shadowDocument.host.classList.remove('drag-over');
+        }
+    });
+
+    shadowDocument.host.addEventListener("drop", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        console.debug("drop", event.target);
+        shadowDocument.host.classList.remove('drag-over');
+        if (!event.dataTransfer.types.includes('text/array')) {
+            return;
+        }
+        const hostDataIDs = JSON.parse(event.dataTransfer.getData('text/array'));
+        const originalElement = getShadowDocument(hostDataIDs);
+        shadowDocument.host.appendChild(originalElement.host);
+
+        // shadowDocument.host.dispatchEvent(new CustomEvent('item-moved', {
+        //     detail: { originalElement: originalElement.outerHTML, targetZone: shadowDocument.host.dataset.zone },
+        //     composed: true,
+        //     bubbles: true
+        // }));
+    });
+
+    refresh();
+</script>
+<style>
+    :host {
+        display: block;
+        min-height: 100px;
+        border: 2px dashed #ccc;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+        background: white;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    :host(.drag-over) {
+        border-color: #4CAF50;
+        background: #f0f8f0;
+    }
+
+    :host([data-zone="source"]) {
+        border-color: #2196F3;
+    }
+
+    :host([data-zone="source"].drag-over) {
+        border-color: #1976D2;
+        background: #f0f7ff;
+    }
+
+    .zone-container {
+        min-height: 60px;
+    }
+
+    .placeholder {
+        display: none;
+    }
+
+    :host(.empty) .placeholder {
+        display: block;
+    }
+
+    :host(.empty) ::slotted([slot="content"]) {
+        display: none;
+    }
+</style>

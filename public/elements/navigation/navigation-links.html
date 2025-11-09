@@ -1,13 +1,22 @@
 <template>
     <ul>
-        <li><a href="/a">Page A</a></li>
-        <li><a href="/b">Page B</a></li>
+        <li><a href="/dragndrop">DragnDrop</a></li>
+        <li><a href="/sqlite">SQLite</a></li>
         <li><a href="/c">Page C</a></li>
     </ul>
 </template>
 
 <script>
     const links = shadowDocument.querySelectorAll("li");
+
+    router.initSitemap([[
+        { "/": { "title": "Home", "template": "home-page" } }
+    ],
+    [
+        { "/dragndrop": { "title": "DragnDrop", "template": "dragndrop-container" } },
+        { "/sqlite": { "title": "SQLite", "template": "sqlite-index" } },
+        { "/c": { "title": "Page C", "template": "page-c" } }
+    ]]);
 
     function onClick(e) {
         e.preventDefault();

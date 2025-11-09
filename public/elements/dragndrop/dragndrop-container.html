@@ -1,0 +1,102 @@
+<script>
+    shadowDocument.host.addEventListener('item-moved', (event) => {
+        const { originalElement, targetZone } = event.detail;
+        console.log(`${originalElement} moved to zone: ${targetZone}`);
+    });
+
+    shadowDocument.host.addEventListener("dragover", (event) => {
+        event.stopPropagation();
+    });
+</script>
+
+<template>
+    <dragndrop-zone data-zone="source" data-label="Source Items">
+        <dragndrop-item>
+            <span>📦 Package 1</span>
+        </dragndrop-item>
+        <dragndrop-item>
+            <span>📄 Document 2</span>
+        </dragndrop-item>
+        <dragndrop-item class="example-item">
+            <span>🎯 Target 3</span>
+        </dragndrop-item>
+        <dragndrop-item class="example-item special">
+            <span>⭐ Special Item</span>
+        </dragndrop-item>
+    </dragndrop-zone>
+
+    <dragndrop-zone data-zone="target-a" data-label="Drop Zone A"></dragndrop-zone>
+    <dragndrop-zone data-zone="target-b" data-label="Drop Zone B"></dragndrop-zone>
+</template>
+
+<style>
+    dragndrop-item {
+        display: inline-block;
+        padding: 10px 15px;
+        margin: 5px;
+        background: #4CAF50;
+        color: white;
+        border-radius: 4px;
+        cursor: grab;
+        user-select: none;
+        transition: opacity 0.2s ease;
+    }
+
+    dragndrop-item:active {
+        cursor: grabbing;
+    }
+
+    dragndrop-zone {
+        display: block;
+        min-height: 100px;
+        border: 2px dashed #ccc;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+        background: white;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    dragndrop-zone.drag-over {
+        border-color: #4CAF50;
+        background: #f0f8f0;
+    }
+
+    dragndrop-zone[data-zone="source"] {
+        border-color: #2196F3;
+    }
+
+    dragndrop-zone[data-zone="source"].drag-over {
+        border-color: #1976D2;
+        background: #f0f7ff;
+    }
+
+    dragndrop-zone::before {
+        content: attr(data-label);
+        position: absolute;
+        top: -10px;
+        left: 10px;
+        background: white;
+        padding: 0 5px;
+        font-size: 12px;
+        color: #666;
+    }
+
+    .zone-content {
+        min-height: 60px;
+    }
+
+    h1,
+    h2 {
+        color: #333;
+    }
+
+    .example-item {
+        background: #FF9800;
+    }
+
+    .example-item.special {
+        background: #9C27B0;
+    }
+</style>
