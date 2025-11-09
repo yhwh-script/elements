@@ -1,0 +1,88 @@
+<script>
+    const { uploadDB, downloadDB, deleteDB } = window.sqlite;
+
+    const uploadButton = shadowDocument.querySelector('#uploadButton');
+    uploadButton.querySelector('click', (e) => {
+        let confirmation = prompt("Pressing OK will overwrite current database! Please write OK.", "");
+        if (confirmation && confirmation.toLowerCase() == "ok") {
+            log("OK to overwrite current database...");
+        } else {
+            alert("Canceled.");
+            e.preventDefault();
+        }
+    });
+    uploadButton.addEventListener('change', () => {
+        // TODO accept sqlite3 files only
+        try {
+            const file = uploadButton.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.addEventListener('load', (e) => {
+                uploadDB(file.name, e.target.result); // e.target.result is an ArrayBuffer with the file's contents
+            });
+            reader.readAsArrayBuffer(file);
+        } catch (e) {
+            error(e);
+        }
+    });
+
+    const downloadButton = shadowDocument.querySelector('#downloadButton');
+    downloadButton.addEventListener('click', (e) => {
+        let databaseName = prompt("Please enter the name of the database to download.", "");
+        const downloadChannel = new BroadcastChannel("download_channel");
+        downloadChannel.onmessage = (message) => {
+            if (message.data.error) {
+                switch (message.data.error) {
+                    case "SQLITE_NOMEM":
+                        alert("Nothing to download. DB empty.");
+                        break;
+                    default:
+                        alert("Unknown Error.");
+                }
+            } else {
+                const a = shadowDocument.querySelector('#downloadLink');
+                a.href = window.URL.createObjectURL(message.data);
+                a.download = (`${databaseName}.sqlite3`);
+                a.addEventListener('click', function () {
+                    setTimeout(function () {
+                        window.URL.revokeObjectURL(a.href);
+                        a.remove();
+                    }, 500);
+                });
+                a.click();
+            }
+        };
+        downloadDB(databaseName);
+    });
+
+    const resetButton = shadowDocument.querySelector('#resetButton');
+    resetButton.addEventListener('click', async (e) => {
+        let databaseName = null;
+        try {
+            databaseName = prompt("Pressing OK will reset specified database! Please enter the name of the database.", "");
+            if (databaseName && databaseName.toLowerCase()) {
+                deleteDB(databaseName);
+            } else {
+                alert("Canceled.");
+                e.preventDefault();
+            }
+        } catch (err) {
+            if (err.name === 'NotFoundError') {
+                error(`${err.name} (${databaseName}.sqlite3): ${err.message}`)
+            }
+        }
+    });
+</script>
+
+<template>
+    <span>
+        <label for="uploadButton">Upload DB</label>
+        <input type="file" id="uploadButton" />
+    </span>
+    <button type="button" id="downloadButton">Download DB</button>
+    <button type="button" id="resetButton">Reset DB</button>
+    <a id="downloadLink" hidden></a>
+</template>
+<style>
+    
+</style>

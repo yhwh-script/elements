@@ -15,6 +15,7 @@
     "keywords": [
         "CSS",
         "CustomElements",
+        "DragnDrop",
         "EventBus",
         "HTML",
         "JavaScript",
@@ -46,5 +47,5 @@
         "preview": "vite preview"
     },
     "type": "module",
-    "version": "4.0.2"
+    "version": "4.0.4"
 }

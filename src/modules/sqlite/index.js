@@ -120,7 +120,7 @@ export function getWorkers() {
 
 export function uploadDB(fileName, arrayBuffer) {
     let [name, extension] = fileName.split(".");
-    if (extension === 'sqlite3') {
+    if (['sqlite', 'sqlite3'].includes(extension)) {
         let worker = workers[name];
         if (!worker) {
             initalizeWorker(name);

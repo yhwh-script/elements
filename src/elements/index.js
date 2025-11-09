@@ -44,6 +44,9 @@ for (const filePath of htmlFiles) {
                 }
                 this.#render();
             }
+            disconnectedCallback() {
+                console.log("disconnected", this); // TODO removeEventListener
+            }
             #render() {
                 this.shadowRoot.replaceChildren();
                 this.#appendTemplate();
