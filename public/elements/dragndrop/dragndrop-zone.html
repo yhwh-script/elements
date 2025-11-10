@@ -58,6 +58,34 @@
         // }));
     });
 
+    shadowDocument.host.addEventListener("touchdrop", (event) => {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        console.log("touchdrop", event);
+
+        const { data, originalElementHost } = event.detail;
+
+        // 1. Überprüfung der Daten (ersetzt if (!event.dataTransfer.types.includes...))
+        if (!data['text/array']) {
+            return;
+        }
+
+        // 2. Visuelle Klasse entfernen (ersetzt dragend auf der Zone)
+        shadowDocument.host.classList.remove('drag-over'); // Optional, da es beim Mouse-Drop schon entfernt wurde
+
+        // 3. Element verschieben (ersetzt die appendChild Logik)
+        // Die Host-Referenz kommt direkt aus dem gefeuerten CustomEvent
+        shadowDocument.host.appendChild(originalElementHost);
+
+        // 4. optional: event-moved feuern (wenn Sie es aktivieren)
+        // shadowDocument.host.dispatchEvent(new CustomEvent('item-moved', {
+        //     detail: { originalElement: originalElementHost.outerHTML, targetZone: shadowDocument.host.dataset.zone },
+        //     composed: true,
+        //     bubbles: true
+        // }));
+
+        console.log('Touch-Drop erfolgreich ausgeführt.');
+    });
     refresh();
 </script>
 <style>
