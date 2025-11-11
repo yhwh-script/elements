@@ -6,6 +6,7 @@
 </template>
 
 <script>
+    let content = shadowDocument.querySelector(".content");
     shadowDocument.host.draggable = true;
 
     function handleDragstart(event) {
@@ -16,7 +17,7 @@
         // event.dataTransfer.setDragImage(host, 0, 0);
         // Store reference to the original element
         event.dataTransfer.setData('text/array', JSON.stringify(shadowDocument.host.hostDataIDs));
-        shadowDocument.host.classList.add("dragging");
+        // shadowDocument.host.classList.add("dragging");
     }
     function handleDrag(event) {
         event.stopPropagation();
@@ -25,7 +26,7 @@
     function handleDragend(event) {
         event.stopPropagation();
         event.preventDefault();
-        shadowDocument.host.classList.remove('dragging');
+        content.classList.remove('dragging');
     }
 
     shadowDocument.host.addEventListener("dragstart", handleDragstart);
@@ -69,12 +70,11 @@
         CustomDragState.setData('text/array', dataIDs);
         CustomDragState.effectAllowed = 'move';
         CustomDragState.isDragging = true;
-        element.classList.add("dragging");
+        shadowDocument.host.classList.add("dragging");
 
         // 2. Startposition für die Verschiebung speichern
         initialX = event.touches[0].clientX - offsetX;
         initialY = event.touches[0].clientY - offsetY;
-        console.log(initialX, initialY);
 
         console.log('Touch-Drag gestartet.');
     }
@@ -88,7 +88,6 @@
         const element = event.currentTarget;
         const currentX = event.touches[0].clientX;
         const currentY = event.touches[0].clientY;
-        console.log(currentX, currentY);
 
         // 1. Neue Verschiebung berechnen
         offsetX = currentX - initialX;
@@ -101,7 +100,7 @@
     function handleTouchEnd(event) {
         if (!CustomDragState.isDragging) return;
 
-        event.stopPropagation();
+        event.stopImmediatePropagation();
         event.preventDefault();
         
         const element = event.currentTarget;
@@ -113,6 +112,7 @@
     
         // 1. Finde das tiefste Element an der Drop-Position
         const deepestElement = deepElementFromPoint(touchX, touchY);
+        console.log({deepestElement})
 
         // 2. Simuliere den Drop auf dem Element unter dem Finger (oder dem Host der Zone)
         if (deepestElement) {
@@ -121,7 +121,6 @@
 
             // Wenn eine Zone gefunden wurde, sende ein simuliertes Drop-Event
             if (targetZone) {
-                console.log({targetZone})
                 // Das ist das Touch-Äquivalent zum nativen 'drop' Event
                 targetZone.dispatchEvent(new CustomEvent('touchdrop', {
                     detail: {
@@ -129,15 +128,15 @@
                         data: CustomDragState.data,
                         originalElementHost: shadowDocument.host
                     },
-                    bubbles: false,
-                    composed: false
+                    bubbles: true,
+                    composed: true
                 }));
             }
         }
 
         // 3. Zustand und Stil zurücksetzen (Äquivalent zu dragend)
         element.style.transform = ''; // Verschiebung zurücksetzen
-        element.classList.remove('dragging');
+        shadowDocument.host.classList.remove('dragging');
         CustomDragState.isDragging = false;
         CustomDragState.clearData(); // Daten löschen
         offsetX = 0; // Verschiebungspuffer zurücksetzen

@@ -59,22 +59,23 @@
     });
 
     shadowDocument.host.addEventListener("touchdrop", (event) => {
+        console.log("touchdrop", event);
         event.preventDefault();
         event.stopImmediatePropagation();
-        console.log("touchdrop", event);
 
         const { data, originalElementHost } = event.detail;
 
         // 1. Überprüfung der Daten (ersetzt if (!event.dataTransfer.types.includes...))
-        if (!data['text/array']) {
-            return;
-        }
+        // if (!data['text/array']) {
+        //     return;
+        // }
 
         // 2. Visuelle Klasse entfernen (ersetzt dragend auf der Zone)
         shadowDocument.host.classList.remove('drag-over'); // Optional, da es beim Mouse-Drop schon entfernt wurde
 
         // 3. Element verschieben (ersetzt die appendChild Logik)
         // Die Host-Referenz kommt direkt aus dem gefeuerten CustomEvent
+        console.log({originalElementHost})
         shadowDocument.host.appendChild(originalElementHost);
 
         // 4. optional: event-moved feuern (wenn Sie es aktivieren)
