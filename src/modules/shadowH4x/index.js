@@ -8,7 +8,7 @@ function patchAddEventListener(targetPrototype) {
         console.debug(`[addEventListener] '${type}'${this ? " on ".concat(this.tagName) : ''}: ${listener}`);
         const originalListener = listener;
         listener = function wrapper(e) {
-            // console.debug(`[${e.type}Wrapper] executing ${originalListener}`);
+            console.debug(`[${e.type}Wrapper] executing ${originalListener}`);
             if (e.currentTarget !== Window) {
                 return originalListener.call(this, e);
             }
@@ -66,7 +66,7 @@ function patchRemoveEventListener(targetPrototype) {
 function patchDispatchEvent(targetPrototype) {
     // const dispatchEventOriginal = targetPrototype.dispatchEvent;
     targetPrototype.dispatchEvent = function (event) {
-        console.log({ event });
+        // console.log({ event });
         console.debug(`[dispatchEvent] '${event.type}' on ${this?.tagName || 'EventTarget'}`);
         let listeners = _bus[event.type];
         if (listeners) {

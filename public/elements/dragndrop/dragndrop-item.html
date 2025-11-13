@@ -78,7 +78,6 @@
 
         console.log('Touch-Drag gestartet.');
     }
-
     function handleTouchMove(event) {
         if (!CustomDragState.isDragging) return;
 
@@ -96,42 +95,40 @@
         // 2. Element verschieben (visuelles Drag)
         element.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
     }
-
     function handleTouchEnd(event) {
         if (!CustomDragState.isDragging) return;
 
-        event.stopImmediatePropagation();
+        event.stopPropagation();
         event.preventDefault();
-        
+
         const element = event.currentTarget;
 
         // 1. Aktuelles Ziel (wo der Finger losgelassen wurde) bestimmen
         // const dropTarget = document.elementFromPoint(event.changedTouches[0].clientX, event.changedTouches[0].clientY);
+        console.log({ event });
         const touchX = event.changedTouches[0].clientX;
         const touchY = event.changedTouches[0].clientY;
-    
+        console.log(touchX, touchY);
+
         // 1. Finde das tiefste Element an der Drop-Position
-        const deepestElement = deepElementFromPoint(touchX, touchY);
-        console.log({deepestElement})
+        const targetZone = dropZoneFromPoint(touchX, touchY);
+        console.log({ targetZone })
 
-        // 2. Simuliere den Drop auf dem Element unter dem Finger (oder dem Host der Zone)
-        if (deepestElement) {
-            // Suche die dragndrop-zone (oder sich selbst) als nächstes Ziel
-            const targetZone = deepestElement.closest('dragndrop-zone');
+        // Suche die dragndrop-zone (oder sich selbst) als nächstes Ziel
 
-            // Wenn eine Zone gefunden wurde, sende ein simuliertes Drop-Event
-            if (targetZone) {
-                // Das ist das Touch-Äquivalent zum nativen 'drop' Event
-                targetZone.dispatchEvent(new CustomEvent('touchdrop', {
-                    detail: {
-                        // Wir übergeben die Daten und das Quell-Element
-                        data: CustomDragState.data,
-                        originalElementHost: shadowDocument.host
-                    },
-                    bubbles: true,
-                    composed: true
-                }));
-            }
+
+        // Wenn eine Zone gefunden wurde, sende ein simuliertes Drop-Event
+        if (targetZone) {
+            // Das ist das Touch-Äquivalent zum nativen 'drop' Event
+            targetZone.dispatchEvent(new CustomEvent('touchdrop', {
+                detail: {
+                    // Wir übergeben die Daten und das Quell-Element
+                    data: CustomDragState.data,
+                    originalElementHost: shadowDocument.host
+                },
+                bubbles: true,
+                composed: true
+            }));
         }
 
         // 3. Zustand und Stil zurücksetzen (Äquivalent zu dragend)
@@ -145,7 +142,7 @@
         console.log('Touch-Drag beendet und Drop simuliert.');
     }
 
-    function deepElementFromPoint(x, y) {
+    function dropZoneFromPoint(x, y) {
         let element = document.elementFromPoint(x, y);
         // Solange das Element einen offenen Shadow Root hat und das Element im Shadow Root 
         // an der gleichen Position existiert:
@@ -158,8 +155,9 @@
                 break;
             }
         }
-        console.log({element});
-        return element;
+        const targetZone = element.closest('dragndrop-zone');
+        console.log({ targetZone });
+        return targetZone;
     }
 
     shadowDocument.host.addEventListener('touchstart', handleTouchStart);

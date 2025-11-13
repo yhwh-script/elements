@@ -42,7 +42,7 @@
     shadowDocument.host.addEventListener("drop", (event) => {
         event.preventDefault();
         event.stopPropagation();
-        console.debug("drop", event.target);
+        console.debug("drop", event);
         shadowDocument.host.classList.remove('drag-over');
         if (!event.dataTransfer.types.includes('text/array')) {
             return;
