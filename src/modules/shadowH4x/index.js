@@ -14,7 +14,6 @@ function patchAddEventListener(targetPrototype) {
             }
         };
         switch (type) {
-            case "touchdrop":
             case "click": {
                 if (!_bus[type]) { _bus[type] = new WeakMap(); }
                 let listenersWeakMap = _bus[type];
