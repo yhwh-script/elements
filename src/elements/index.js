@@ -32,7 +32,7 @@ for (const filePath of htmlFiles) {
         customElements.define(`${prefix}-${suffix}`, class extends HTMLElement {
             constructor() {
                 super();
-                const shadowRoot = this.attachShadow({ mode: "open" });
+                this.attachShadow({ mode: "open" });
             }
             connectedCallback() {
                 this.hostDataIDs = []; // used to find the nested shadowDocument

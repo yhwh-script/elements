@@ -1,6 +1,7 @@
 export const htmlFiles=[
   "elements/dragndrop/dragndrop-container.html",
   "elements/dragndrop/dragndrop-item.html",
+  "elements/dragndrop/dragndrop-test.html",
   "elements/dragndrop/dragndrop-zone.html",
   "elements/error/error-404.html",
   "elements/home/home-page.html",

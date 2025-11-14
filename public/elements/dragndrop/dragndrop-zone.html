@@ -4,61 +4,24 @@
     </div>
 </template>
 <script>
-    function refresh() {
-        if (shadowDocument.host.querySelector("dragndrop-item")) {
-            shadowDocument.host.classList.remove("empty");
+    const dropZone = shadowDocument.host;
+    const slot = shadowDocument.querySelector('slot');
+
+    dropZone.addEventListener("dragover", (event) => {
+        dropZone.classList.add('drag-over');
+    }, { passive: true });
+
+    dropZone.addEventListener("dragleave", (event) => {
+        dropZone.classList.remove('drag-over');
+    }, { passive: true });
+
+    slot.addEventListener("slotchange", (event) => {
+        if (dropZone.querySelector("dragndrop-item")) {
+            dropZone.classList.remove("empty");
         } else {
-            shadowDocument.host.classList.add("empty");
-        }
-    };
-
-    shadowDocument.querySelector('slot').addEventListener("slotchange", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        refresh();
-    });
-
-    shadowDocument.host.addEventListener("dragover", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-    });
-
-    shadowDocument.host.addEventListener("dragenter", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        console.debug("dragenter", shadowDocument.host);
-        shadowDocument.host.classList.add('drag-over');
-    });
-
-    shadowDocument.host.addEventListener("dragleave", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        // console.debug("dragleave", event.relatedTarget);
-        if (!shadowDocument.host.contains(event.relatedTarget)) {
-            shadowDocument.host.classList.remove('drag-over');
+            dropZone.classList.add("empty");
         }
     });
-
-    shadowDocument.host.addEventListener("drop", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        console.debug("drop", event.target);
-        shadowDocument.host.classList.remove('drag-over');
-        if (!event.dataTransfer.types.includes('text/array')) {
-            return;
-        }
-        const hostDataIDs = JSON.parse(event.dataTransfer.getData('text/array'));
-        const originalElement = getShadowDocument(hostDataIDs);
-        shadowDocument.host.appendChild(originalElement.host);
-
-        // shadowDocument.host.dispatchEvent(new CustomEvent('item-moved', {
-        //     detail: { originalElement: originalElement.outerHTML, targetZone: shadowDocument.host.dataset.zone },
-        //     composed: true,
-        //     bubbles: true
-        // }));
-    });
-
-    refresh();
 </script>
 <style>
     :host {
@@ -89,14 +52,6 @@
 
     .zone-container {
         min-height: 60px;
-    }
-
-    .placeholder {
-        display: none;
-    }
-
-    :host(.empty) .placeholder {
-        display: block;
     }
 
     :host(.empty) ::slotted([slot="content"]) {

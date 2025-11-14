@@ -9,20 +9,19 @@ function patchAddEventListener(targetPrototype) {
         const originalListener = listener;
         listener = function wrapper(e) {
             console.debug(`[${e.type}Wrapper] executing ${originalListener}`);
-            console.log({_bus});
             if (e.currentTarget !== Window) {
                 return originalListener.call(this, e);
             }
         };
         switch (type) {
             case "click": {
-                if (!_bus["click"]) { _bus["click"] = new WeakMap(); }
-                let clickListenersWeakMap = _bus["click"];
+                if (!_bus[type]) { _bus[type] = new WeakMap(); }
+                let listenersWeakMap = _bus[type];
                 let listeners;
                 if (this) {
-                    listeners = clickListenersWeakMap.get(this);
+                    listeners = listenersWeakMap.get(this);
                     if (!listeners) { // there are not clickListener for this yet, initialize with new Array.
-                        clickListenersWeakMap.set(this, [listener]);
+                        listenersWeakMap.set(this, [listener]);
                     } else { // there is at least one other clickListeners. push the listener if not already present
                         if (!listeners.get(this).includes(listener)) {
                             listeners.push(listener);
@@ -66,9 +65,15 @@ function patchRemoveEventListener(targetPrototype) {
 function patchDispatchEvent(targetPrototype) {
     // const dispatchEventOriginal = targetPrototype.dispatchEvent;
     targetPrototype.dispatchEvent = function (event) {
+        // console.log({ event });
         console.debug(`[dispatchEvent] '${event.type}' on ${this?.tagName || 'EventTarget'}`);
         let listeners = _bus[event.type];
-        if (event.type === "click" && listeners) { listeners = listeners.get(event.target); }
+        if (listeners) {
+            if (["click"].includes(event.type)) { listeners = listeners.get(event.target); }
+            if (["touchdrop"].includes(event.type)) {
+                console.log(this, _bus);
+                listeners = listeners.get(this); }
+        }
         if (listeners) {
             for (let listener of listeners) {
                 console.debug(`[dispatchEvent] executing ${listener}`);

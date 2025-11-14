@@ -1,35 +1,47 @@
 <template>
     <!-- Draggable Item Custom Element with Shadow DOM and Slots -->
-    <div class="content">
-        <slot></slot>
-    </div>
+    <slot></slot>
 </template>
 
 <script>
-    shadowDocument.host.draggable = true;
+    const element = shadowDocument.host;
+    element.draggable = true;
 
-    shadowDocument.host.addEventListener("dragstart", (event) => {
-        // event.stopPropagation();
-        // event.preventDefault();
-        event.dataTransfer.clearData();
-        event.dataTransfer.effectAllowed = 'move';
-        // event.dataTransfer.setDragImage(host, 0, 0);
-        // Store reference to the original element
-        event.dataTransfer.setData('text/array', JSON.stringify(shadowDocument.host.hostDataIDs));
+    function handleStart(event) {
+        setTimeout(() => element.classList.add("dragging"), 0);
+    }
+    function handleDragEnd(event) {
+        // TODO: Uncaught HierarchyRequestError: Failed to execute 'appendChild' on 'Node': The new child element contains the parent.
+        dropToZoneFromPoint(event.clientX, event.clientY)
+        setTimeout(() => element.classList.remove('dragging'), 0);
+    }
+    function handleTouchEnd(event) {
+        dropToZoneFromPoint(event.changedTouches[0].clientX, event.changedTouches[0].clientY)
+        setTimeout(() => element.classList.remove('dragging'), 0);
+    }
+    function dropToZoneFromPoint(x, y) {
+        let maybeDropZone = document.elementFromPoint(x, y);
+        while (maybeDropZone && maybeDropZone.shadowRoot) {
+            const nextElement = maybeDropZone.shadowRoot.elementFromPoint(x, y);
+            if (nextElement && nextElement !== maybeDropZone) {
+                if (maybeDropZone.tagName === 'DRAGNDROP-ZONE') {
+                    break;
+                }
+                maybeDropZone = nextElement;
+            } else {
+                break;
+            }
+        }
+        maybeDropZone.appendChild(element);
+        return maybeDropZone;
+    }
 
-        shadowDocument.host.classList.add("dragging");
-    });
-
-    shadowDocument.host.addEventListener('drag', (event) => {
-        event.stopPropagation();
-        // event.preventDefault();
-    });
-
-    shadowDocument.host.addEventListener('dragend', (event) => {
-        event.stopPropagation();
-        event.preventDefault();
-        shadowDocument.host.classList.remove('dragging');
-    });
+    element.addEventListener("dragstart", handleStart, { passive: true });
+    element.addEventListener('dragend', handleDragEnd, { passive: true });
+    if ('ontouchstart' in window) {
+        element.addEventListener('touchstart', handleStart, { passive: true });
+        element.addEventListener('touchend', handleTouchEnd, { passive: true });
+    }
 </script>
 
 <style>
@@ -50,13 +62,7 @@
     }
 
     :host(.dragging) {
-        opacity: 0.5;
+        opacity: 0.7;
         /* background: red; */
-    }
-
-    .content {
-        display: flex;
-        align-items: center;
-        gap: 5px;
     }
 </style>

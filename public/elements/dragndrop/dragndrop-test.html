@@ -1,0 +1,189 @@
+<template>
+    <header>
+        <h1>Drag and Drop Touch</h1>
+        <p>
+            This is a demo page that loads the drag-drop-touch.esm.js file for
+            shimming drag-and-drop functions for touch events.
+        </p>
+        <p>
+            Its project page is over on
+            <a
+                href="https://github.com/drag-drop-touch-js/dragdroptouch">https://github.com/drag-drop-touch-js/dragdroptouch</a>.
+        </p>
+    </header>
+
+    <main>
+        <section>
+            <header>
+                <h2>A box dragging example</h2>
+                <p>
+                    Drag some boxes around with the mouse, then open your Developer
+                    Tools, turn on mobile emulation, and try to do the same with touch
+                    input enabled. Things should still work.
+                </p>
+            </header>
+
+            <div id="columns">
+                <div class="column" draggable="true">
+                    <header>Input</header>
+                    <input title="input" type="text" placeholder="input" autocomplete="none" />
+                    <input title="check" type="checkbox" />
+                </div>
+
+                <div class="column" draggable="true">
+                    <header>TextArea</header>
+                    <textarea title="textarea" placeholder="textarea"></textarea>
+                </div>
+
+                <div class="column" draggable="true">
+                    <header>Select</header>
+                    <select title="select">
+                        <option>one</option>
+                        <option>two</option>
+                        <option>three</option>
+                    </select>
+                    <select title="multi" multiple>
+                        <option>one</option>
+                        <option>two</option>
+                        <option>three</option>
+                    </select>
+                </div>
+
+                <div class="column" draggable="true">
+                    <header>Image</header>
+                    <img src="https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg"
+                        alt="grapefruit" draggable="false" />
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+</template>
+<script>
+    let draggable = null;
+    const cols = shadowDocument.querySelectorAll(`#columns .column`);
+
+    cols.forEach((col) => {
+        col.addEventListener(`dragstart`, handleDragStart);
+        col.addEventListener(`dragenter`, handleDragEnter);
+        col.addEventListener(`dragover`, handleDragOver);
+        col.addEventListener(`dragleave`, handleDragLeave);
+        col.addEventListener(`drop`, handleDrop);
+        col.addEventListener(`dragend`, handleDragEnd);
+    });
+
+    function handleDragStart({ target, dataTransfer }) {
+        if (target.className.includes(`column`)) {
+            draggable = target;
+            draggable.classList.add(`dragging`);
+
+            dataTransfer.effectAllowed = `move`;
+            dataTransfer.setData(`text`, draggable.innerHTML);
+
+            // customize drag image for one of the panels
+            const haveDragFn = dataTransfer.setDragImage instanceof Function;
+            if (haveDragFn && target.textContent.includes(`X`)) {
+                let img = new Image();
+                img.src = `dragimage.jpg`;
+                dataTransfer.setDragImage(img, img.width / 2, img.height / 2);
+            }
+        }
+    }
+
+    function handleDragOver(evt) {
+        if (draggable) {
+            evt.preventDefault();
+            evt.dataTransfer.dropEffect = `move`;
+        }
+    }
+
+    function handleDragEnter({ target }) {
+        if (draggable) {
+            target.classList.add(`over`);
+        }
+    }
+
+    function handleDragLeave({ target }) {
+        if (draggable) {
+            target.classList.remove(`over`);
+        }
+    }
+
+    function handleDragEnd() {
+        draggable = null;
+        cols.forEach((col) => col.classList.remove(`over`));
+    }
+
+    function handleDrop(evt) {
+        if (draggable === null) return;
+
+        evt.stopPropagation();
+        evt.stopImmediatePropagation();
+        evt.preventDefault();
+
+        if (draggable !== this) {
+            swapDom(draggable, this);
+        }
+    }
+
+    // https://stackoverflow.com/questions/9732624/how-to-swap-dom-child-nodes-in-javascript
+    function swapDom(a, b) {
+        let aParent = a.parentNode;
+        let bParent = b.parentNode;
+        let aHolder = document.createElement(`div`);
+        let bHolder = document.createElement(`div`);
+        aParent.replaceChild(aHolder, a);
+        bParent.replaceChild(bHolder, b);
+        aParent.replaceChild(b, aHolder);
+        bParent.replaceChild(a, bHolder);
+    }
+</script>
+<style>
+    [draggable] {
+        user-select: none;
+    }
+
+    .dragging {
+        opacity: 0.5;
+    }
+
+    #columns {
+        display: flex;
+        gap: 1rem;
+
+        .column {
+            display: inline-block;
+            height: 150px;
+            width: 150px;
+            background: lightgrey;
+            opacity: 1;
+
+            header {
+                color: #fff;
+                padding: 5px;
+                background: #222;
+                pointer-events: none;
+            }
+
+            &.over {
+                border: 2px dashed #000;
+                opacity: 0.5;
+                box-sizing: border-box;
+            }
+
+            &>input,
+            &>textarea,
+            &>select {
+                display: block;
+                width: 85%;
+                margin: 5%;
+                max-height: calc(1.25em * 4);
+            }
+
+            &>img {
+                height: 50%;
+            }
+        }
+    }
+</style>

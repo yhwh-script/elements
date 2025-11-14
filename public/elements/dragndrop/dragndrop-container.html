@@ -1,13 +1,4 @@
-<script>
-    shadowDocument.host.addEventListener('item-moved', (event) => {
-        const { originalElement, targetZone } = event.detail;
-        console.log(`${originalElement} moved to zone: ${targetZone}`);
-    });
-
-    shadowDocument.host.addEventListener("dragover", (event) => {
-        event.stopPropagation();
-    });
-</script>
+<script></script>
 
 <template>
     <dragndrop-zone data-zone="source" data-label="Source Items">
