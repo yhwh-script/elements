@@ -1,5 +1,4 @@
 <template>
-    <!-- Draggable Item Custom Element with Shadow DOM and Slots -->
     <slot></slot>
 </template>
 
@@ -8,10 +7,10 @@
     element.draggable = true;
 
     function handleStart(event) {
+        event.preventDefault();
         setTimeout(() => element.classList.add("dragging"), 0);
     }
     function handleDragEnd(event) {
-        // TODO: Uncaught HierarchyRequestError: Failed to execute 'appendChild' on 'Node': The new child element contains the parent.
         dropToZoneFromPoint(event.clientX, event.clientY)
         setTimeout(() => element.classList.remove('dragging'), 0);
     }
@@ -32,6 +31,7 @@
                 break;
             }
         }
+        maybeDropZone = maybeDropZone.closest("dragndrop-zone");
         maybeDropZone.appendChild(element);
         return maybeDropZone;
     }
@@ -39,7 +39,7 @@
     element.addEventListener("dragstart", handleStart, { passive: true });
     element.addEventListener('dragend', handleDragEnd, { passive: true });
     if ('ontouchstart' in window) {
-        element.addEventListener('touchstart', handleStart, { passive: true });
+        element.addEventListener('touchstart', handleStart);
         element.addEventListener('touchend', handleTouchEnd, { passive: true });
     }
 </script>
